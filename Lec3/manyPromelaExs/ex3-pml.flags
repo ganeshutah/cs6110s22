@@ -1,0 +1,35 @@
+
+Ben-Ari
+
+Asserts 2.2.1
+
+p43 - shows interleaving
+
+Listing 4.3 shown
+
+5.2 : LTL
+
+5.2.2 : semantics of LTL - interpretation
+
+5.3 : safety property
+
+Ch5 is good
+
+Ch10 - never claims
+
+page 161
+
+-- ex3.pml --
+
+spin -a -X
+gcc -w -o pan -D_POSIX_SOURCE -DMEMLIM=128 -DSAFETY -DXUSAFE -DNOFAIR pan.c
+time ./pan -v -X -m10000 -w19 -A -c1
+
+Show guided simulation in ex3
+
+-- ex3b.pml --
+
+ispin fine
+
+
+
