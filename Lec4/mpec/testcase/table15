@@ -1,0 +1,17 @@
+numprocs = 4
+
+proc
+st		[w] = 1
+st.rel	[x] = 1
+
+proc
+ld.acq	r1 = [x] <1>
+ld		r2 = [y] <0>
+
+proc
+st		[y] = 1
+st.rel	[z] = 1
+
+proc
+ld.acq	r3 = [z] <1>
+ld		r4 = [w] <0>

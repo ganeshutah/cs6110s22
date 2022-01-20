@@ -1,0 +1,8 @@
+digraph G
+{
+  main -> parse;
+  parse -> execute;
+  main -> init;
+  main->cleanup;
+
+}

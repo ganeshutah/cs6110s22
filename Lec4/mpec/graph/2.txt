@@ -1,0 +1,18 @@
+
+digraph G
+{
+ main [shape=box];
+ main -> parse;
+ parse-> execute;
+ main -> init;
+ main ->cleaup;
+ execute -> { make_string; printf }
+ 
+ init -> make_string;
+ edge [color=red];
+
+ main->printf;
+ make_string[label="st la r1 <0> "];
+ execute -> compare;
+
+}

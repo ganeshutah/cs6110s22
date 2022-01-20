@@ -1,0 +1,11 @@
+numprocs = 2
+
+proc
+st	[x] = 1
+mf
+ld	r1 = [y] <0>
+
+proc
+st	[y] = 1
+mf
+ld	r2 = [x] <0>

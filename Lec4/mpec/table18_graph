@@ -1,0 +1,21 @@
+digraph G { 
+0[ label = "p0 :st [x] = 1"];
+0 -> 3 [ label = " TranstiveOrder"];
+0 -> 2 [ label = " TransitiveOrder"];
+0 -> 1 [ label = " TransitiveOrder,ProgramOrder"];
+0 -> 5 [ label = " TotalOrder"];
+1[ label = "p0 :mf"];
+1 -> 2 [ label = " TranstiveOrder,ProgramOrder"];
+2[ label = "p0 :ld r1 = [y] <0>"];
+2 -> 3 [ label = " TranstiveOrder,ReadValue,TotalOrder"];
+3[ label = "p1 :st.rel [y] = 1"];
+3 -> 4 [ label = " AtomicWBRelease,TotalOrder"];
+3 -> 5 [ label = " AtomicWBRelease"];
+4[ label = "p2 :ld.acq r2 = [y] <1>"];
+4 -> 5 [ label = " TransitiveOrder,ProgramOrder"];
+4 -> 0 [ label = " TransitiveOrder"];
+4 -> 3 [ label = " ReadValue"];
+5[ label = "p2 :ld r3 = [x] <0>"];
+5 -> 0 [ label = " TranstiveOrder,ReadValue"];
+ } 
+

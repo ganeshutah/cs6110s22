@@ -1,0 +1,21 @@
+ZVerify SAT Solver Verifier
+Copyright Princeton University, 2003-2004. All Right Reseverd.
+COMMAND LINE: ./bin/zverify_df unsat_core1.cnf resolve_trace -core 
+Read in original clauses ... 7 Clauses 
+Mem Usage After Readin file:		2384
+Begin constructing all involved clauses 
+Num. Learned Clause:			0
+Num. Clause Built:			0
+Constructed all involved clauses 
+Conflict clause verification finished.
+Levelize variables...finished
+Begin Resolution... Empty clause generated.
+Mem Usage :				2384
+Original Num. Clauses:			7
+Needed Clauses to Construct Empty:	7
+Total Variable count:			424
+Variables involved in Empty:		6
+Unsat Core dumped:			unsat_core.cnf
+CPU Time:				0.01
+Peak Mem Usage:				2292
+Verification Successful 

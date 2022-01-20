@@ -1,0 +1,12 @@
+numprocs = 3
+
+proc
+st.rel	[x] = 1
+
+proc
+ld.acq	r1 = [x] <1>
+st		[y] = 1
+
+proc
+ld.acq	r2 = [y] <1>
+ld		r3 = [x] <0>

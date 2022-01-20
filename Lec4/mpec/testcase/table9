@@ -1,0 +1,9 @@
+numprocs = 2
+
+proc 
+st		[x] = 1
+st.rel	[y] = x
+
+proc
+ld	r1 = [y] <x>
+ld	r2 = [r1] <0>

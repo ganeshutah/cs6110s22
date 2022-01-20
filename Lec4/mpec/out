@@ -1,0 +1,29 @@
+parse retval = 0
+Generating CNF file ... 
+ ... reflextive rules ... 
+ ... read rules ... 
+ ... write rules ... 
+ ... uncacheable rules ... 
+ ... transtive rules ... 
+ DONE
+final_cnf_file = /tmp/cnf_temp
+
+**** zchaff egine ... read_cnf .... done 
+
+Solver is destorying .... 
+zchaff solve is released 
+**********  zchaff solver is released ... *********** 
+result = 1 
+
+
+************ iteration 0 *******************
+
+******* using zchaff to solve .... /tmp/cnf_temp 
+
+
+**** zchaff egine ... read_cnf .... done 
+
+Solver is destorying .... 
+zchaff solve is released 
+**********  zchaff solver is released ... *********** 
+mv unsat_core.cnf unsat_core0.cnf
