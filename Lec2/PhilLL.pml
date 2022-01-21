@@ -72,12 +72,12 @@ init {
    };
 }
 
-never { /* Negation of []<> progress */
+never { /* Negation of []<> progress */  
  do
  :: skip
  :: (!progress) -> goto accept;
  od;
- accept: goto accept;
+ accept: !progress -> goto accept;
 }
 
 /*---
