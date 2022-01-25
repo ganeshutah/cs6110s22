@@ -93,11 +93,11 @@ byte i = Ns-1;
         atomic {
         do
         :: i > 0 ->     //--covered by first ND asg-->
-	   ns[i] = P;
+	   ns[i] = ...figure out...
            run node(tokqArray[i], tokqArray[i-1], workqArray[i], i);
            i--
         :: i == 0 ->
-	   ns[i] = A;
+	   ns[i] = ...figure out...
 	   run node(tokqArray[0], tokqArray[Ns-1], workqArray[i], i);
 	   break
         od
