@@ -1,0 +1,309 @@
+
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+
+\documentclass[11pt]{article}
+
+\usepackage{bera}
+%\renewcommand{\familydefault}{\rmfamily}
+
+\usepackage{graphicx,url}
+\usepackage{proof}
+\usepackage{framed}
+\usepackage{etaremune}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{paralist}
+\thispagestyle{empty}
+
+% 1. To get version suitable for students to populate,
+%    remove the contents of the \ignoreSoln{..body..}
+%
+% 2. To get a version suitable for generating PDF 
+%    without solutions, remove the #1 below
+%
+% 3. To generate solutions, keep the #1 below
+%
+% 4. Assigned grader fills \ignoreSoln{..body..}
+%    and also provides his/her feedback to student
+%    and policy followed for point deduction
+%    So design policy before grading begins.
+
+\newcommand{\ignoreSoln}[1]{#1}   
+%\newcommand{\ignoreModel}[1]{#1} 
+
+
+\newcommand{\bigset}[2]{\big\{\;#1\;:\;#2\;\big\}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Np}{\mathbb{N^{+}}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\DeclareMathSizes{14}{14}{14}{14}
+
+\begin{document}
+
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+
+%\renewcommand{\qedsymbol}{\filledbox}
+
+
+\begin{center}
+\begin{large}
+  CS 6110, Spring 2022, Assignment 2  \\
+  Given 1/25/22 -- Due 2/1/22 by 11:59 pm via your Github 
+  \ \\
+%  \ \\  
+    {  {\Large\bf NAME: } \hfill {\Large\bf UNID: }\hspace{4cm} }
+          \ \\
+\end{large}
+
+\end{center}
+
+\noindent {\bf Answering, Submission:\/}
+Please provide a PDF with these questions answered
+in the spaces indicated (if you don't retain the frameboxes,
+at least please begin each answer on a new page
+with the question numbers/parts indicated).
+Also have your work ready on your Github for me to pull/test.
+%
+Note that Asg2 will be gone over in class and even partially
+worked out; you'll be finishing the unfinished parts and submitting
+the full solution.
+%
+Orientation videos and further help will be available (drop a note anytime
+on Piazza for help)---{\bf start early}.
+
+\begin{enumerate}
+  
+%- 1 ----------------------------------------------------------------
+\item (20 points) Read about LTL from 
+  CEATL's Chapter 22.
+  (You may also look at Ben-Ari's Chapter 5.)
+  By way of practice,
+  in the directory {\tt Lec5}
+  within the class Git
+  \url{https://github.com/ganeshutah/cs6110s22.git},
+  you have been given four Promela files {\tt p1.pml}
+  through {\tt p4.pml}.   
+  %
+  Run these for your own understanding and repeat the results
+  at the end of these files (if any).
+  %
+  In particular, in {\tt p4.pml}, you are checking
+  whether {\em Justice} implies {\em Compassion}.
+  %
+  These terms are defined in the paper
+  ``All you need is Compassion''
+  \url{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.124.3239}
+  (more properly \url{https://dl.acm.org/doi/10.5555/1787526.1787547}).
+  %
+  Does Justice imply Compassion?
+  %
+  Does Compassion imply Justice?
+  %
+  Based on your observations (please provide terminal sessions),
+  do you agree that Pnueli's paper's title is true?
+  %
+  Also answer these:
+  \begin{enumerate}
+  \item A solicitor walks around the neighborhood knocking on one door,
+    then the other, taking a ``round-robin'' walk, and the home-owners
+    are found to be infinitely-often opening and closing their doors
+    in response.
+    Are the home-owners being just of compassionate? Why?
+
+  \item A solicitor walks to one door, leans on the bell and rings
+    the bell continuously (till it almost melts).
+    The home-owner infinitely-often opens the door.
+    Now are the home-owners being just of compassionate?     Why?
+
+  \item Repeat the above answers assuming that the solicitor is
+    a network packet and home-owner doors are ports of a switch.
+  \end{enumerate}
+
+
+\newlength{\minpagw}
+\settowidth{\minpagw}{\hspace{40em}}
+
+\begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+\end{minipage}
+
+\clearpage
+  
+
+%- 2 ----------------------------------------------------------------
+
+\item (20 points) 
+  %
+  Now turn to Page 419 of CEATL and look at questions 22.3 and 22.5.
+  %
+  In 22.5, a Promela model and {\tt never} automata
+  that distinguish 22.3(a) and 22.3(b) are given.
+  \begin{enumerate}
+  \item Remove the {\tt never} and replace it with an equivalent LTL.
+    For instance, in the code we have {\tt never !(foo)} and here,
+    the LTL being checked is {\tt foo}.
+    Make sure that my claimed checks work (the first formula is true
+    of {\tt sb} but not {\tt sa}, while the second formula is true
+    of both structures; notice that each diagram
+    that warrants being a Kripke structure has been given the name
+    {\tt sa} through {\tt sh}).
+
+  \item In the earlier question,
+    a method to check the validity of LTL
+    formulas using the most general Kripke Structure was introduced.
+    %
+    Using that method, answer these questions, with evidence furnished.
+    %
+    \begin{enumerate}
+    \item    Does the LTL of {\tt sa} implies that of {\tt sb}?
+      Provide reasons after observing the trace from your experiment.
+    \item    Does the LTL of {\tt sb} implies that of {\tt sa}?
+      Provide reasons after observing the trace from your experiment.      
+    \end{enumerate}
+  \end{enumerate}
+
+% From: https://darrengoossens.wordpress.com/2019/09/01/latex-box-several-paragraphs-of-text-tightly/
+% Set width of minipage (minpagw) to length of longest line by using
+% the line as as argument to \settowidth
+
+
+%\newlength{\minpagw}
+%\settowidth{\minpagw}{\hspace{40em}}
+
+\begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+\end{minipage}
+
+\clearpage
+
+%- 3 ----------------------------------------------------------------
+
+\item (20 points) Fix the broken Bubble-sort, either through
+  a mild repair or a wholesale rewrite.
+  Verify (upto the limits of finite-state model checking) that
+  it works.
+  
+\begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+\end{minipage}
+
+\clearpage
+
+%- 4 ----------------------------------------------------------------
+\item (20 points) In the Philosophers example, the example suffered
+  from
+  ``livelock'' (all of them take the left, get nacked for the right,
+  and repeat).
+  One way to avoid such livelocks is to break symmetry (make one philosopher
+  reach for the right fork first).
+  %
+  Implement this solution.
+  %
+  Now show that the system is lock-free but not wait-free
+  (see \url{https://en.wikipedia.org/wiki/Non-blocking_algorithm}
+  for these definitions).
+  %
+  Lock-free is {\em communal progress}
+  and
+  wait-free is {\em individual progress}.
+  %
+  Use LTL assertions (not {\tt never} automata).
+  %
+  Submit your work.
+  
+  
+\begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+\end{minipage}
+
+\clearpage
+
+%- 5 ----------------------------------------------------------------
+\item (20 points) Follow-along and finish the design of
+  Dijkstra's distributed termination algorithm.
+  You'll be asked to type these with me in class live, and
+  finish.
+  %
+  \url{http://people.cs.aau.dk/~adavid/teaching/MVP-10/17-Termination-lect14.pdf}
+  and
+  \url{https://www.cs.rochester.edu/u/sree/courses/csc-258/spring-2018/slides/22-td.pdf}
+  do a good job of providing slides
+  that I'll go thru in class.
+  %
+  The original is
+  \url{https://www.cs.utexas.edu/~EWD/ewd08xx/EWD840.PDF}
+  from Dijkstra's collection
+  \url{https://www.cs.utexas.edu/~EWD/indexBibTeX.html}.
+  %
+  Look for files in the directory {\tt Lec5.}
+  
+
+\begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+\end{minipage}
+
+% --------------------------------------------------------------
+\end{enumerate}
+
+\end{document}
