@@ -78,46 +78,14 @@ proctype node (chan tokIn, tokOut, workIn; byte myid)
 
   do
   :: ns[myid] == A ->
-              if 
-              :: ns[myid] = P //--R03
-              :: do 
-                 :: (pick > 0   )   -> pick--  
-                 :: (pick < Ns-1)   -> pick++  
-                 :: (pick != myid) -> break  // pick place to assign work
-                 od;
-	         workqArray[pick]!WORK ;
-	         if
-		 :: pick > myid -> nc=B //--R04, upstream
-		 :: pick < myid         //--R05, downstream
-		 fi;
- 	         ns[myid] = P //--Common to R04 and R05
-              :: tokIn?HasT   //--R06		 
-              fi
+  ...fill...
+  
   :: ns[myid] == P ->
-              if
-              :: workIn?WORK -> ns[myid] = A //--R07
-              :: tokIn?HasT //--R11
-              :: (HasT != E) ->
-                 if
-                 :: nc == B -> HasT = E; tokOut!B;
-                               nc = W  //--R08
-                 :: nc == W ->
-                    if
-                    :: (myid != 0) -> tokOut!HasT; HasT = E //--R09		    
-                    :: (myid == 0) ->
-                       if
-                       :: HasT == B -> HasT = E;
-                                       tokOut!W        //--R10
-                       :: HasT == W -> terminated = 1; //--R11
-		                       goto end
-                       fi
-                    fi
-                 fi
-             fi
+  ...fill...
  od;
  end: 
  //terminated is true here
-   assert ((ns[0]==P)&&(ns[1]==P)&&(ns[2]==P))
+   assert (...what...)
 }
 
 init {
@@ -136,19 +104,13 @@ byte i = Ns-1;
         }
 }
 
-/*
+//--comment out when doing invalid end-state safety first
 never {
-
 do
 :: skip
 :: terminated &&
-  ((ns[0]==A)||(ns[1]==A)||(ns[2]==A))
+  (...what...)
    -> break
 od
 accept: 1 -> goto accept
 }
-*/
-
-/*
-
-*/
