@@ -1,0 +1,53 @@
+
+SPIN FLAGS
+
+* We are after catching
+  - safety violations
+    > invalid end-states
+      . by noticing processes are "left behind midway in protocol code" upon termination
+      . invalid end states disabled by accept cycles! so try w/o -a
+    > deadlocks
+      . by studying error traces
+    > assertion violations
+      . by putting "assert"
+      
+  - liveness violations
+    > ltl
+    > never automata
+    > progress labels
+
+  - keep an eye on POR flags
+    > partial-order reduction can save states
+    > read all warnings to make sure it is being soundly applied
+    
+* How to run
+  - Terminal runs work fine
+  - xspin works fine
+  - ispin also (on Macs their fonts are ugly often)
+
+* Example flags that might work for safety/liveness
+  - spin -a file.pml
+  - gcc -DMEMLIM=1024 -O2 -w -o pan pan.c
+  - ./pan or ./pan -m<depth> where depth is varied from 25 thru 1000 to 100000 etc
+  - spin -p -t file.pml upon error. Also see how to print globals/locals (-g, -l)
+  - ./pan -a + other flags above
+
+
+* General approach
+  - Take any .pml model
+  - Remove the never claim from consideration (e.g., comment it out)
+  - See if you get invalid end-state errors; if so, fix
+  - See if you get deadlocks; if so, fix
+
+* Progress Labels
+  - another nice Promela feature
+  - useful if one has to "tickle" a sequence of labels
+  - accept will be clunky then
+  - use as you seem fit
+
+===
+
+
+/Users/ganesh/repos/Spin/PromelaExs/Distributed-Termination/
+ - has distributed termination variants
+ - see which works and why/why-not
