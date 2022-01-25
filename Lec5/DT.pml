@@ -4,7 +4,7 @@
 // Node assigning work upstream turns itself B and becomes P.
 // But that node (that assigns work upstream and turns itself B) can become A if assigned back work.
 // C/E means false or true (C is color, which is W or B)
-// State Vector: <NP:I, NS:A, NC:W, HasT: W/B/F, NI: 0..N-1> 
+// State Vector: <NP:I, NS:A, NC:W, HasT: W/B/E, NI: 0..N-1> 
 // NP=node PC, NS=node state, NC=node color,
 
 R01: <NP:I, NS:A, NC:W, HasT:E, NI: ==0> : tokout! ~~>
