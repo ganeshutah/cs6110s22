@@ -120,7 +120,8 @@ on Piazza for help)---{\bf start early}.
   %
   Does Compassion imply Justice?
   %
-  Based on your observations (please provide terminal sessions),
+  Based on your observations (please provide terminal sessions \underline{showing
+  the error trace(s)} that substantiate your conclusions),
   do you agree that Pnueli's paper's title is true?
   %
   Also answer these:
@@ -130,6 +131,8 @@ on Piazza for help)---{\bf start early}.
     are found to be infinitely-often opening and closing their doors
     in response.
     Are the home-owners being just of compassionate? Why?
+    (\underline{justice} is also known as {\em weak fairness}, while
+    \underline{compassionate} is also known as {\em strong fairness}).
 
   \item A solicitor walks to one door, leans on the bell and rings
     the bell continuously (till it almost melts).
@@ -219,6 +222,13 @@ on Piazza for help)---{\bf start early}.
   a mild repair or a wholesale rewrite.
   Verify (upto the limits of finite-state model checking) that
   it works.
+  \underline{Submit evidence} that you ran exhaustively (possible for this simple a model).
+    For fun, increase the array size from its current value in steps of 2 (or 1) and do a plot
+    of the number of states generated, revisited, and matched. This tells you how many
+    states are typically generated and how these grow. In symbolic (SAT/SMT-based model-checking),
+    the states are not in a hash-table and the representation grows differently. In fact, a
+    BDD-based hash-table has a size of $1$ when it is empty as well as when it is full!
+    These are K-layer DFAs basically. See \url{https://spinroot.com/gerard/pdf/sttt98.pdf}.
   
 \begin{minipage}{\minpagw}
   \fbox{%
@@ -254,7 +264,8 @@ on Piazza for help)---{\bf start early}.
   %
   Use LTL assertions (not {\tt never} automata).
   %
-  Submit your work.
+  Submit your work
+  \undeline{accompanied by traces and helpful observations}.
   
   
 \begin{minipage}{\minpagw}
@@ -289,6 +300,8 @@ on Piazza for help)---{\bf start early}.
   \url{https://www.cs.utexas.edu/~EWD/indexBibTeX.html}.
   %
   Look for files in the directory {\tt Lec5.}
+  %
+  \underline{Come Thu to type this} fully and check it!
   
 
 \begin{minipage}{\minpagw}
