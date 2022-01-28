@@ -304,6 +304,54 @@ on Piazza for help)---{\bf start early}.
   Look for files in the directory {\tt Lec5.}
   %
   \underline{Come Thu to type this} fully and check it!
+
+  \underline{\bf ADDENDUM:\/}
+  \begin{enumerate}
+  \item {\tt DT.pml} is the initial template we began with
+  \item  {\tt DT\_latest.pml} is the latest version we ended up with
+  \item Your task is:
+    \begin{enumerate}
+    \item Begin with {\tt DT\_latest.pml} or your latest good solution
+    \item Attempt a random initialization of the A/P status (see code below).
+      While the original Dijkstra implementation started with the root alone
+      in ``A,'' with the fix suggested below, all initializations are OK---which
+      is a nice generalization!
+    \item Fix enough about the protocol's implementation (see Piazza discussion).
+      The hint is to think about how ``upstream'' must be implemented.
+      {\bf      As if you want more hints, but as a private Piazza post!}
+    \item Then run the protocol verification!
+
+    \end{enumerate}
+  \end{enumerate}
+
+\begin{verbatim}
+  \begin{scriptsize}
+init {
+byte i = Ns-1;
+        atomic {
+        do
+        :: i > 0 ->     
+           run node(tokqArray[i], tokqArray[i-1], workqArray[i], i);
+	   if //-- nondet initialization of initial state
+	   :: ns[i] = A 
+	   :: ns[i] = P
+	   fi;
+           i-- ;	   
+	   
+        :: i == 0 ->
+	   run node(tokqArray[0], tokqArray[Ns-1], workqArray[i], i);
+	   if //-- nondet initialization of initial state
+	   :: ns[i] = A
+	   :: ns[i] = P
+	   fi;	   
+	   break
+        od
+        }
+}
+
+  \end{scriptsize}
+\end{verbatim}
+
   
 
 \begin{minipage}{\minpagw}
