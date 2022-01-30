@@ -190,7 +190,7 @@ on Piazza for help)---{\bf start early}.
 
 \noindent{\bf We will call this ``LTL of sa'':}
 
-\noindent{\tt !(<>([](a && b))) -> ((<>([]a)) || (<> (!a && !b)))  }
+\noindent{\tt !(<>([](a \&\& b))) -> ((<>([]a)) || (<> (!a \&\& !b)))  }
 
 \noindent{This can be read as ``[Not eventually-henceforth (a and b)]
   IMPLIES [either (eventually-henceforth a)
@@ -208,7 +208,7 @@ never {/* !( !(<>([](a && b))) -> ((<>([]a)) || (<> (!a && !b)))) */
 
 \noindent{\bf We will call this ``LTL of sb'':}
 
-\noindent{\tt !(<>([](a && b))) -> ( (<>([]a)) || (<> (b)) ) }
+\noindent{\tt !(<>([](a \&\& b))) -> ( (<>([]a)) || (<> (b)) ) }
 
 \noindent{This can be read as ``[Not eventually-henceforth (a and b)]
   IMPLIES [either (eventually-henceforth a)
