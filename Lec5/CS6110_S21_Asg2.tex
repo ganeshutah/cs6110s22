@@ -187,12 +187,54 @@ on Piazza for help)---{\bf start early}.
     formulas using the most general Kripke Structure was introduced.
     %
     Using that method, answer these questions, with evidence furnished.
+
+\noindent{\bf We will call this ``LTL of sa'':}
+
+\noindent{\tt !(<>([](a && b))) -> ((<>([]a)) || (<> (!a && !b)))  }
+
+\noindent{This can be read as ``[Not eventually-henceforth (a and b)]
+  IMPLIES [either (eventually-henceforth a)
+    or
+    eventually (!a and !b)]''}
+ 
+\noindent{We call this ``LTL of sa'' because on Page 420, we have this:}
+\begin{verbatim}
+/* sb satisfies this, and not sa */
+/*Type `spin -f "formula"' and cut&paste the resulting never aut. */
+/*----------------------------------------------------------------*/
+never {/* !( !(<>([](a && b))) -> ((<>([]a)) || (<> (!a && !b)))) */
+\end{verbatim}
+
+
+\noindent{\bf We will call this ``LTL of sb'':}
+
+\noindent{\tt !(<>([](a && b))) -> ( (<>([]a)) || (<> (b)) ) }
+
+\noindent{This can be read as ``[Not eventually-henceforth (a and b)]
+  IMPLIES [either (eventually-henceforth a)
+    or
+    eventually b]''}
+
+\noindent{This is because on Page 421, we have this:}
+
+\begin{verbatim}
+/*--- in contrast, both sa and sb satisfy this --->
+ never {  /* !( !(<>([](a && b))) -> ( (<>([]a)) || (<> (b)) ) ) * /}
+ <---*/
+\end{verbatim}
+
+    
     %
     \begin{enumerate}
     \item    Does the LTL of {\tt sa} implies that of {\tt sb}?
       Provide reasons after observing the trace from your experiment.
+
+
+      
     \item    Does the LTL of {\tt sb} implies that of {\tt sa}?
-      Provide reasons after observing the trace from your experiment.      
+      Provide reasons after observing the trace from your experiment.
+
+   
     \end{enumerate}
   \end{enumerate}
 
