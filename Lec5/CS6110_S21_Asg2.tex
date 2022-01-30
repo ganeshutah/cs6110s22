@@ -197,7 +197,10 @@ on Piazza for help)---{\bf start early}.
     or
     eventually (!a and !b)]''}
  
-\noindent{We call this ``LTL of sa'' because on Page 420, we have this:}
+\noindent{We call this ``LTL of sa'' because on Page 420, we have this
+  (in a never automation,
+  the LTL is given one more negation):}
+
 \begin{verbatim}
 /* sb satisfies this, and not sa */
 /*Type `spin -f "formula"' and cut&paste the resulting never aut. */
@@ -215,7 +218,8 @@ never {/* !( !(<>([](a && b))) -> ((<>([]a)) || (<> (!a && !b)))) */
     or
     eventually b]''}
 
-\noindent{This is because on Page 421, we have this:}
+\noindent{This is because on Page 421, we have this (in a never automation,
+   the LTL is given one more negation):}
 
 \begin{verbatim}
 /*--- in contrast, both sa and sb satisfy this --->
