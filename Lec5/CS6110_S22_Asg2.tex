@@ -312,10 +312,12 @@ never {/* !( !(<>([](a && b))) -> ((<>([]a)) || (<> (!a && !b)))) */
   %
   \begin{compactitem}
   \item old instructions:
-  \begin{scriptsize}
-  Use LTL assertions (not {\tt never} automata).
-  %
-  Submit your work
+    \begin{scriptsize}
+      \begin{compactitem}
+      \item  Use LTL assertions (not {\tt never} automata).
+
+      \item  Submit your work
+      \end{compactitem}
   \underline{accompanied by traces and helpful observations}.
   \end{scriptsize}
 
@@ -372,10 +374,16 @@ never {/* !( !(<>([](a && b))) -> ((<>([]a)) || (<> (!a && !b)))) */
       While the original Dijkstra implementation started with the root alone
       in ``A,'' with the fix suggested below, all initializations are OK---which
       is a nice generalization!
+
+    \item {\bf Fixed problem:\/} If you did not get any errors, then no fix needed! To tell you
+      the back-story, I ran into a fix, then I thought the ``upstream logic'' was wrong.
+      But now I can't reproduce the error. So perhaps this is after all a fixed protocol.
+\begin{scriptsize}    
     \item Fix enough about the protocol's implementation (see Piazza discussion).
       The hint is to think about how ``upstream'' must be implemented.
       {\bf      As if you want more hints, but as a private Piazza post!}
     \item Then run the protocol verification!
+\end{scriptsize}
 
     \end{enumerate}
   \end{enumerate}
