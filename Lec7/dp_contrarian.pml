@@ -1,3 +1,10 @@
+//
+// spin -a dp_contrarian.pml
+// gcc -O2 -w -o pan pan.c
+// ./pan -a -m20000 /* no issues! */
+//
+//
+
 mtype = {are_you_free, yes, no, release}
 
 byte progress;
