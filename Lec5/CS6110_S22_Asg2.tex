@@ -143,6 +143,9 @@ on Piazza for help)---{\bf start early}.
 
   \item Repeat the above answers assuming that the solicitor is
     a network packet and home-owner doors are ports of a switch.
+  \item[] \underline{\bf This is an invitation} for you to think
+    about such a router---or if you have seen a more realistic situation
+    like this, plz write in your answer.
   \end{enumerate}
 
 
@@ -232,12 +235,15 @@ never {/* !( !(<>([](a && b))) -> ((<>([]a)) || (<> (!a && !b)))) */
     \begin{enumerate}
     \item    Does the LTL of {\tt sa} implies that of {\tt sb}?
       Provide reasons after observing the trace from your experiment.
+    \item[] \underline{\bf This is a validity-checking} situation, so
+      you must invoke the most general Kripke-structure here.
 
 
       
     \item    Does the LTL of {\tt sb} implies that of {\tt sa}?
       Provide reasons after observing the trace from your experiment.
-
+    \item[] \underline{\bf This is a validity-checking} situation, so
+      you must invoke the most general Kripke-structure here.
    
     \end{enumerate}
   \end{enumerate}
@@ -316,12 +322,12 @@ never {/* !( !(<>([](a && b))) -> ((<>([]a)) || (<> (!a && !b)))) */
       \begin{compactitem}
       \item  Use LTL assertions (not {\tt never} automata).
 
-      \item  Submit your work
+      \item  Submit your work accompanied by traces and helpful observations.
       \end{compactitem}
-  \underline{accompanied by traces and helpful observations}.
+     
   \end{scriptsize}
 
-\item new instructions:
+\item \underline{new instructions:}
   \begin{compactitem}
   \item Given the fix I posed on piazza (see {\tt dp\_contrarian.pml} pushed in)
   \item Understand the fix (the LTL used). Try it to make sure it works. Make any suggestions on improvement
@@ -375,7 +381,13 @@ never {/* !( !(<>([](a && b))) -> ((<>([]a)) || (<> (!a && !b)))) */
       in ``A,'' with the fix suggested below, all initializations are OK---which
       is a nice generalization!
 
-    \item {\bf Fixed problem:\/} If you did not get any errors, then no fix needed! To tell you
+    \item {\bf Fixed problem:\/} \underline{If you did not get any errors}, then no fix needed!
+      But, please plot the state-space growth for N=4 (if it finishes) and N=5 (if it finishes). Just give
+      it about 15 min max and see if it finishes. That is all (no need to burn up your time and electricity).
+      
+    \item[]
+            \item[]
+      To tell you
       the back-story, I ran into a fix, then I thought the ``upstream logic'' was wrong.
       But now I can't reproduce the error. So perhaps this is after all a fixed protocol.
 \begin{scriptsize}    
