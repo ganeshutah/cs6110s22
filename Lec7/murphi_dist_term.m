@@ -24,114 +24,70 @@ Ruleset p:procT Do
    Alias actpass  actpass_array[p] Do
    Alias tokout:  token_array[p]   Do
    Alias workin:  work_array[p]    Do
-    	Rule "Circulate token if root, else nothing; then enter MAIN"
-	(state = INIT) 
-	==> if (p == root_id) then --root action
-  	     tokout := WHITE;
-	    endif;
-	    state := MAIN;
+	-- R01 -----------------------------------------------------	      
+    	Rule "In ctrl state INIT, circulate token if root, else nothing; enter MAIN"
+	(control = INIT) 
+	==> Begin
+    	     if (p == root_id) then --root action
+               tokout := WHITE;
+             endif;
+	     control := MAIN;
+            End;
 	Endrule;
+
+	-- R03 -----------------------------------------------------
+    	Rule "In ctrl state MAIN, if I'm active, I can go passive"
+	(state = MAIN) & (actpass == ACTPASS)
+	==> Begin
+	      actpass := PASSIVE;
+            End;
+	Endrule;
+
+	-- R04 -----------------------------------------------------
+    	Rule "In ctrl state MAIN, if I'm active, I can pick target & assign work"
+	(state = MAIN) & (actpass == ACTIVE)
+	==> var victim : procT;
+            Begin
+	      victim := rand_pick_work_dest(p);
+	      work_array[victim] := true;
+	      If upstream_victim(victim,p) 
+	      Then
+	         ncolor := BLACK; -- R04, R05
+	      Endif;
+	      actpass := PASSIVE;
+	    End;
+
+-- R06
+-- 'Rule' "In ctrl state MAIN, if I'm active, I can receive incoming token"
+-- This is not implemented. The token just sits at the output port of
+-- my predecessor
+	    
+	-- R07 -----------------------------------------------------
+    	Rule "In ctrl state MAIN, if passive, if in-facing work, consume, Active"
+	(state = MAIN) & (actpass == PASSIVE) & (..)
+	==> var victim : procT;
+            Begin
+	      victim := rand_pick_work_dest(p);
+	      work_array[victim] := true;
+	      If upstream_victim(victim,p) 
+	      Then
+	         ncolor := BLACK; -- R04, R05
+	      Endif;
+	      actpass := PASSIVE;
+	    End;
+	
+
+	==> Begin
+	      
+	      work_array[victim] := true;
+	      If upstream_victim(victim,p) 
+	      Then
+	         ncolor := BLACK; -- R04, R05
+	      Endif;
+	      actpass := PASSIVE;
+	    End;          
 	-------------------------------------------------------
-    	Rule "If the lock is around, grab it"
-		((state = TRYING) & mutex & (prob_owner = p))
-			==> state := LOCKED ; mutex := false;
-	Endrule;
 	-------------------------------------------------------
-
-    	Rule "If the lock isn't around, send request out"
-		((state = TRYING) & mutex & (prob_owner != p))
-			==> place_request(prob_owner,p);
-			    state := BLOCKED;
-		   	    mutex := false;
-	Endrule;
-	-------------------------------------------------------
-
-
-	Rule "Locked -> Enter if no waiters"
-		((state = LOCKED) & emptyq(waiter)) ==> state := ENTER;
-	Endrule;
-	-------------------------------------------------------
-
-
-    	Rule "When unlocking if waiter queue isn't empty, go to EXITING state"
-		((state = LOCKED) & !emptyq(waiter) & !mutex)
-			==> mutex := true; 
-		   	    state := EXITING;
-	Endrule;
-	-------------------------------------------------------
-
-
-    	Rule "In EXITING state, pass hd waiter and tail of waiters along."
-		((state = EXITING) & mutex)
-			==>   -- set the PO variable at node frontq(waiters) and
-			      -- also our own PO variable to frontq(waiters)
-			      -- the former step unblocks node frontq(waiters),
-			      -- giving it the lock
-
-			      prob_owners[frontq(waiter)] := frontq(waiter);
-
-		   	      prob_owner := frontq(waiter);
-
-			      copytail(waiter, waiters[prob_owner]);
-
-		   	      state := ENTER;
-		   	      mutex := false
-	Endrule;
-	-------------------------------------------------------
-
-
-    	Rule "In state HANDLE, if there is a waiting request, goto TRYGRANT"
-		((hstate = HANDLE) & !mutex & !emptyq(request_buf))
-			==> mutex := true;
-		   	    hstate := TRYGRANT;
-	Endrule;
-	-------------------------------------------------------
-
-
-    	Rule "In state TRYGRANT, if lock is free, grant it."
-		((hstate = TRYGRANT) & (prob_owner = p) & (state != LOCKED) & mutex)
-			==>
-			   if (state != ENTER)
-			   then Error
-                              "State can't be TRYING/LOCKED/EXIT(due to mutex) or BLOCKED (due to prob_owner)"
-			   else
-
-			   if (!emptyq(waiter))
-			   then Error "Lock is HERE and FREE while there is a waiter."
-			   else
-
-			    -- this step will unblock process hd(request_buf) effectively giving it the lock
-			    prob_owners[frontq(request_buf)] := frontq(request_buf);
-			    ar_states[frontq(request_buf)] := LOCKED;
-
-		   	    prob_owner := frontq(request_buf);
-
-		   	    dequeue(request_buf);
-		   	    hstate := HANDLE;
-		   	    mutex := false;
-			   endif
-			   endif
-	Endrule;
-	-------------------------------------------------------
-
-
-    	Rule "If lock not around, pass buck along to who we think is PO"
-		(hstate = TRYGRANT & prob_owner != p & mutex)
-			==> place_request(prob_owner,p);
-		   	    dequeue(request_buf);
-		   	    hstate := HANDLE;
-		   	    mutex := false;
-	Endrule;
-	-------------------------------------------------------
-
-
-    	Rule "If lock around but busy, enqueue request"
-		(hstate = TRYGRANT & prob_owner = p & state = LOCKED & mutex)
-			==> enqueue(waiter,frontq(request_buf));
-		   	    dequeue(request_buf);
-		   	    hstate := HANDLE;
-		   	    mutex := false;
-	Endrule;
 	-------------------------------------------------------
 
     Endalias;
@@ -139,7 +95,7 @@ Ruleset p:procT Do
     Endalias;
     Endalias;
     Endalias;
-    Endalias;
+
 Endruleset;
 
 -------------------------------------------------------
