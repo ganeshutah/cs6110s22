@@ -8,6 +8,7 @@ Type
   toknT  : enum { NONE, BLACK, WHITE }; -- three states for token in-facing
   ncolorT: enum { WHITE, BLACK }; -- node colors are w/b
   actpassT: enum { ACTIVE, PASSIVE }; -- nodes are active/passive
+  procRange: 0..Nprocs-1;
 -------------------------------------------------------
 Var -- proc[p] in state_array[p] state reads work_array[p] writes token_array[p]
   root_id      : procT; -- if procid p = root_id, that is the root, else not
@@ -16,6 +17,22 @@ Var -- proc[p] in state_array[p] state reads work_array[p] writes token_array[p]
   state_array  : Array [procT] of stateT; -- each proc in its state
   ncolor_array : Array [procT] of ncolorT; -- node colors
   actpass_array: Array [procT] of actpassT; -- active or passive
+  rvictim_array: Array [procT] of procRange; -- to store random victim
+-------------------------------------------------------
+function rand_pick_work_dest(p)
+begin
+  if (queue.Count < -1)
+  then Error "Illegal queue count value"
+  else return (queue.Count = -1)
+  endif
+end;
+
+
+
+
+
+
+
 -------------------------------------------------------
 Ruleset p:procT Do
 -- anyone could be root, and it depends on the initialization!!
@@ -25,7 +42,7 @@ Ruleset p:procT Do
    Alias tokout:  token_array[p]   Do
    Alias workin:  work_array[p]    Do
 	-- R01 -----------------------------------------------------	      
-    	Rule "In ctrl state INIT, circulate token if root, else nothing; enter MAIN"
+    	Rule "In control  INIT, circulate token if root, else nothing; enter MAIN"
 	(control = INIT) 
 	==> Begin
     	     if (p == root_id) then --root action
@@ -36,17 +53,31 @@ Ruleset p:procT Do
 	Endrule;
 
 	-- R03 -----------------------------------------------------
-    	Rule "In ctrl state MAIN, if I'm active, I can go passive"
-	(state = MAIN) & (actpass == ACTPASS)
+    	Rule "In control MAIN, if I'm active, I can go passive"
+	(control = MAIN) & (actpass == ACTPASS)
 	==> Begin
 	      actpass := PASSIVE;
             End;
 	Endrule;
 
 	-- R04 -----------------------------------------------------
-    	Rule "In ctrl state MAIN, if I'm active, I can pick target & assign work"
-	(state = MAIN) & (actpass == ACTIVE)
-	==> var victim : procT;
+    	Rule "In control MAIN, if I'm active, pick ND target, goto PICKRANDVICTIM"
+	(control = MAIN) & (actpass == ACTIVE)
+	==> control := PICKRANDVICTIM
+	Endrule;
+
+	-- R04a -----------------------------------------------------
+    	Rule "In control MAIN, if I'm active, pick ND target, goto PICKRANDVICTIM"
+	(control = MAIN) & (actpass == ACTIVE)
+	==> control := PICKRANDVICTIM
+	Endrule;
+
+
+
+var victim : procT;
+	    victim := 0;
+	    If (victim < Nprocs)
+	
             Begin
 	      victim := rand_pick_work_dest(p);
 	      work_array[victim] := true;
@@ -58,12 +89,12 @@ Ruleset p:procT Do
 	    End;
 
 -- R06
--- 'Rule' "In ctrl state MAIN, if I'm active, I can receive incoming token"
+-- 'Rule' "In control state MAIN, if I'm active, I can receive incoming token"
 -- This is not implemented. The token just sits at the output port of
 -- my predecessor
 	    
 	-- R07 -----------------------------------------------------
-    	Rule "In ctrl state MAIN, if passive, if in-facing work, consume, Active"
+    	Rule "In control state MAIN, if passive, if in-facing work, consume, Active"
 	(state = MAIN) & (actpass == PASSIVE) & (..)
 	==> var victim : procT;
             Begin
