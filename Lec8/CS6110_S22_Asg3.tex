@@ -151,7 +151,6 @@ on Piazza for help). {\em I encourage students constructing answers jointly!}
 
 
 
-
 \begin{minipage}{\minpagw}
   \fbox{%
     \parbox{\linewidth}{%
@@ -187,7 +186,7 @@ on Piazza for help). {\em I encourage students constructing answers jointly!}
     pan -a -m90}'' 
   \item You can simply look at the last state printed by
     ``{\tt spin  -s -r -t locking-buggy.pml}'' and spot the bug
-  \item Fix the bug and rerun
+  \item Fix the bug and rerun. {\em The fix consists of making one of the guard conditions stronger.}
   \item Can a node decide to toss  requests to a random node rather than along the PO chain?
     (It might do this to avoid network congestion.) Justify this, and implement + verify in
     the fixed version of your protocol (make some nodes nondeterministically toss the
