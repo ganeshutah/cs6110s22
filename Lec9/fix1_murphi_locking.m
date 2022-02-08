@@ -34,7 +34,7 @@ Type
 Var
   request_bufs 	: Array [procT] of request_bufT; 
   prob_owners  	: Array [procT] of procT;        
-  waiters	: Array [procT] of request_bufT; 
+--> NUKED!  waiters	: Array [procT] of request_bufT; 
   mutexes	: Array [procT] of Boolean;      
 
   ar_states	: Array [procT] of stateT;       
@@ -135,7 +135,7 @@ end;
 Ruleset p:procT Do
     Alias 	request_buf: request_bufs[p] Do 
     Alias	prob_owner : prob_owners[p]  Do 
-    Alias	waiter	   : waiters[p]	     Do 
+--> NUKED!      Alias waiter	   : waiters[p]	     Do 
     Alias	state	   : ar_states[p]    Do 
     Alias	hstate	   : hstates[p]      Do 
     Alias	mutex	   : mutexes[p]      Do 
@@ -161,33 +161,37 @@ Ruleset p:procT Do
 	Endrule;
 	-------------------------------------------------------
 
+--> CHANGED
 
-	Rule "Locked -> Enter if no waiters"
-		((state = LOCKED) & emptyq(waiter)) ==> state := ENTER;
-	Endrule;
+	Rule "Locked -> Enter if no waiters: waiter in RB"
+		((state = LOCKED) & emptyq(request_buf)) ==> state := ENTER;
+ 	Endrule;
+
 	-------------------------------------------------------
 
+--> CHANGED
 
-    	Rule "When unlocking if waiter queue isn't empty, go to EXITING state"
-		((state = LOCKED) & !emptyq(waiter) & !mutex)
+    	Rule "When unlocking if waiter queue isn't empty, go to EXITING state: waiter in rb"
+		((state = LOCKED) & !emptyq(request_buf) & !mutex)
 			==> mutex := true; 
 		   	    state := EXITING;
 	Endrule;
 	-------------------------------------------------------
 
+--> CHANGED!
 
     	Rule "In EXITING state, pass hd waiter and tail of waiters along."
 		((state = EXITING) & mutex)
-			==>   -- set the PO variable at node frontq(waiters) and
-			      -- also our own PO variable to frontq(waiters)
-			      -- the former step unblocks node frontq(waiters),
+			==>   -- set the PO variable at node frontq(request_buf) and
+			      -- also our own PO variable to frontq(request_buf)
+			      -- the former step unblocks node frontq(request_buf),
 			      -- giving it the lock
 
-			      prob_owners[frontq(waiter)] := frontq(waiter);
+			      prob_owners[frontq(request_buf)] := frontq(request_buf);
 
-		   	      prob_owner := frontq(waiter);
+		   	      prob_owner := frontq(request_buf);
 
-			      copytail(waiter, waiters[prob_owner]);
+                              copytail(request_buf, request_bufs[prob_owner]); --src,dest
 
 		   	      state := ENTER;
 		   	      mutex := false
@@ -195,7 +199,7 @@ Ruleset p:procT Do
 	-------------------------------------------------------
 
 
-    	Rule "In state HANDLE, if there is a waiting request, goto TRYGRANT"
+    	Rule "In state HANDLE, if there is a waiting request, goto TRYGRANT - is there a corner-case here? "
 		((hstate = HANDLE) & !mutex & !emptyq(request_buf))
 			==> mutex := true;
 		   	    hstate := TRYGRANT;
@@ -208,16 +212,20 @@ Ruleset p:procT Do
 			==>
 			   if (state != ENTER)
 			   then Error
-                              "State can't be TRYING/LOCKED/EXIT(due to mutex) or BLOCKED (due to prob_owner)"
+                              "State 'state' can't be TRYING/LOCKED/EXIT(due to mutex) or BLOCKED (due to prob_owner being self now)"
 			   else
 
-			   if (!emptyq(waiter))
-			   then Error "Lock is HERE and FREE while there is a waiter."
+			   if (!emptyq(request_buf))
+			   then Error "Lock is HERE and FREE while there are a bunch of waiters; they should have been processed when the 'acquire' process was releasing the lock."
 			   else
 
 			    -- this step will unblock process hd(request_buf) effectively giving it the lock
 			    prob_owners[frontq(request_buf)] := frontq(request_buf);
-			    ar_states[frontq(request_buf)] := LOCKED;
+--> The following rule is an overreach! It is
+--> moving another process when that process must
+--> take the pains to move itself! we will fix that later!
+
+			    ar_states[frontq(request_buf)] := LOCKED; 
 
 		   	    prob_owner := frontq(request_buf);
 
@@ -239,17 +247,19 @@ Ruleset p:procT Do
 	Endrule;
 	-------------------------------------------------------
 
+--> CHANGED!
+-- THIS RULE IS GONE because we are
+-- conflating request_buf and waiter
 
-    	Rule "If lock around but busy, enqueue request"
-		(hstate = TRYGRANT & prob_owner = p & state = LOCKED & mutex)
-			==> enqueue(waiter,frontq(request_buf));
-		   	    dequeue(request_buf);
-		   	    hstate := HANDLE;
-		   	    mutex := false;
-	Endrule;
+--    	Rule "If lock around but busy, enqueue request"
+--		(hstate = TRYGRANT & prob_owner = p & state = LOCKED & mutex)
+--			==> enqueue(waiter,frontq(request_buf));
+--		   	    dequeue(request_buf);
+--		   	    hstate := HANDLE;
+--		   	    mutex := false;
+--	Endrule;
 	-------------------------------------------------------
 
-    Endalias;
     Endalias;
     Endalias;
     Endalias;
@@ -264,7 +274,7 @@ Startstate
 For p:procT Do
     initq(request_bufs[p]);
     prob_owners[p] := n;  -- designate some n in procT  to be the owner
-    initq(waiters[p]);
+-->GONE!    initq(waiters[p]);
     ar_states[p] := ENTER;
     hstates[p] := HANDLE;
     mutexes[p] := false;
@@ -289,3 +299,81 @@ Endexists;
 -- end of locking.m
 -------------------------------------------------------
 
+-- BUG
+-- 
+-- Start Simulation :
+-- 
+-- Firing startstate Startstate 0, n:procT_2
+-- Obtained state:
+-- request_bufs[procT_1].Ar[0]:Undefined
+-- request_bufs[procT_1].Ar[1]:Undefined
+-- request_bufs[procT_1].Count:-1
+-- request_bufs[procT_2].Ar[0]:Undefined
+-- request_bufs[procT_2].Ar[1]:Undefined
+-- request_bufs[procT_2].Count:-1
+-- request_bufs[procT_3].Ar[0]:Undefined
+-- request_bufs[procT_3].Ar[1]:Undefined
+-- request_bufs[procT_3].Count:-1
+-- prob_owners[procT_1]:procT_2
+-- prob_owners[procT_2]:procT_2
+-- prob_owners[procT_3]:procT_2
+-- mutexes[procT_1]:false
+-- mutexes[procT_2]:false
+-- mutexes[procT_3]:false
+-- ar_states[procT_1]:ENTER
+-- ar_states[procT_2]:ENTER
+-- ar_states[procT_3]:ENTER
+-- hstates[procT_1]:HANDLE
+-- hstates[procT_2]:HANDLE
+-- hstates[procT_3]:HANDLE
+-- 
+-- Firing rule Try acquiring the lock, p:procT_1
+-- Obtained state:
+-- mutexes[procT_1]:true
+-- ar_states[procT_1]:TRYING
+-- 
+-- Firing rule Try acquiring the lock, p:procT_2
+-- Obtained state:
+-- mutexes[procT_2]:true
+-- ar_states[procT_2]:TRYING
+-- 
+-- Firing rule If the lock is around, grab it, p:procT_2
+-- Obtained state:
+-- mutexes[procT_2]:false
+-- ar_states[procT_2]:LOCKED
+-- 
+-- Firing rule Try acquiring the lock, p:procT_3
+-- Obtained state:
+-- mutexes[procT_3]:true
+-- ar_states[procT_3]:TRYING
+-- 
+-- Firing rule If the lock isn't around, send request out, p:procT_1
+-- Obtained state:
+-- request_bufs[procT_2].Ar[0]:procT_1
+-- request_bufs[procT_2].Count:0
+-- mutexes[procT_1]:false
+-- ar_states[procT_1]:BLOCKED
+-- 
+-- Firing rule In state HANDLE, if there is a waiting request, goto TRYGRANT - is there a corner-case here? , p:procT_2
+-- Obtained state:
+-- mutexes[procT_2]:true
+-- hstates[procT_2]:TRYGRANT
+-- 
+-- Firing rule If the lock isn't around, send request out, p:procT_3
+-- Obtained state:
+-- request_bufs[procT_2].Ar[1]:procT_3
+-- request_bufs[procT_2].Count:1
+-- mutexes[procT_3]:false
+-- ar_states[procT_3]:BLOCKED
+-- 
+-- 
+-- Status:
+-- 
+-- 	7 rules fired in simulation in 0.10s.
+-- 
+-- Error:
+-- 
+-- 	Deadlocked state found.
+-- 
+-- [ganesh@line-ganesh1 mux]$
+  
