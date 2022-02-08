@@ -103,7 +103,7 @@ on Piazza for help). {\em I encourage students constructing answers jointly!}
   This is on practicing the use of Murphi.
   At the end of this assignment, I include the N-Process Peterson protocol
   for mutual exclusion, described in
-  \url{https://en.wikipedia.org/wiki/Peterson\%27s_algorithm}.
+  \url{https://en.wikipedia.org/wiki/Peterson%27s_algorithm}.
   %
   (This comes from the Murphi distribution; pasting it here for your
   convenience.)
@@ -124,6 +124,31 @@ on Piazza for help). {\em I encourage students constructing answers jointly!}
   constructs.
   %
   I'll be adding more Murphi documentation in the interim.
+  %
+  Here are some tips:
+  %
+  \begin{compactitem}
+  \item looks like we just need to run with the default -v
+    instead of -s which seems to be the difference between verification and continuous simulation.
+    [ Correct. also -vdfs is for DFS verification. ]
+    
+  \item Please try for N=3 and N=5 (constants at the top). I don't mind if $>5$ is not tried (although it ought
+    to finish).
+
+  \item Please also try with symmetry reduction (the -sym flag ; it also takes a number like 1 or 2).
+    With that, it will take more time per printout (per batch of rules) but will be very memory-efficient. 
+
+  \item If it says "out of memory", you can give e.g. another flag "-m32" and then "-m64" etc.
+    That is the megabytes allocated.
+
+  \item Finally, the printouts take time away from the model-checker.
+    Making its printing rate go down can make it somewhat faster.
+    (Already the printing rate is not too high, but every bit helps.)
+
+  \item At the bottom of the file there is a recording of former runs they finished using this tool
+    (way back in 1998 or so). That is the kind of result I'm looking for.
+  \end{compactitem}
+
 
 
 \begin{minipage}{\minpagw}
@@ -161,7 +186,7 @@ on Piazza for help). {\em I encourage students constructing answers jointly!}
     pan -a -m90}'' 
   \item You can simply look at the last state printed by
     ``{\tt spin  -s -r -t locking-buggy.pml}'' and spot the bug
-  \item Fix the bug and rerun
+  \item Fix the bug and rerun. {\em The fix consists of making one of the guard conditions stronger.}
   \item Can a node decide to toss  requests to a random node rather than along the PO chain?
     (It might do this to avoid network congestion.) Justify this, and implement + verify in
     the fixed version of your protocol (make some nodes nondeterministically toss the

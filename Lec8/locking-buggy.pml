@@ -26,7 +26,7 @@ proctype acquire(PID me)
                  mutex[me] = 1
         };
         if
-        :: po[me] == me -> locked[me] = 1;
+        :: po[me] == me -> locked[me] = 1;   
                             mutex[me] = 0
         :: po[me] != me ->
                         request[po[me]]!me;
@@ -38,10 +38,14 @@ proctype acquire(PID me)
                                 q_len_ch[me] ? count;
 					assert(qlen[me]==0);
                                 qlen[me] = qlen[me]+count;
-                                count = 0
+                                count = 0  // reset dead variable to unique value to prevent un-necessary state explosion!!
                         };
-                        ( len(waiters[me]) == qlen[me] );
-                        locked[me] = 1;
+                        ( len(waiters[me]) == qlen[me] ); // suspend till I actually receive the promised
+			  		      	          // number of waiters sent by "the other party"
+							  // into the waiters[me] queue. This queue is presumably
+							  // going up monotonically in response to the sends that
+							  // someone else is doing...
+                        locked[me] = 1; // now I've received all the waiters for the resouce, and I'm now taking the resource
                         mutex[me]=0
         fi;
 /*  */
@@ -49,28 +53,57 @@ proctype acquire(PID me)
     release:
         
         atomic {
-            mutex[me] == 0 ->
+            mutex[me] == 0 -> // take this mutex so that we don't race on locked[me] with my own handle proc
             locked[me] = 0;
             mutex[me] = 1
         };
         if
-        :: qlen[me] ->
-            waiters[me] ? po[me];
-            qlen[me] = qlen[me]-1;
-            q_len_ch[po[me]] ! qlen[me];
+        :: qlen[me] ->			// C convention; qlen[me] > 0 means "true" so that this guard can fire!
+	   	    			// This means that I now need to send the waiters to the
+					// "new probable owner" (i.e. the real owner)
+
+
+            waiters[me] ? po[me];	// This means:
+	    		  		// 1) there is a pile of waiters that have come into
+					// the waiters[me] queue. Remember, this is the "promised amount of waiters".
+					//
+					// So I'm gonna pass the "locked" privilege to the "head waiter"
+					// Thus I'll now know that the "probable owner" (i.e. real owner) is
+					// the head waiter.
+					//
+					// So I might as well set my po[me] variable to point to the "new owner"
+
+	    
+            qlen[me] = qlen[me]-1;	// Now I have sucked up one waiter; so the qlen count must go down by 1
+	    
+            q_len_ch[po[me]] ! qlen[me]; // Tell the 'new party' the count to expect!
+	    		       		 // which is one less because the lock was assigned to the 'new party'
+					 // Its waiters is only one less now
+	    
             do
-            :: qlen[me] -> atomic {
-                waiters[me] ? thread;
-                waiters[po[me]] ! thread;
-                thread = 0;
+            :: qlen[me] -> atomic {     // repeat till I've sent the waiter info till qlen[me] goes down to 0
+                waiters[me] ? thread;   // this "thread" is just a local variable
+			      		// happens to be the next waiter to be forwarded along
+					// in this loop
+					
+                waiters[po[me]] ! thread; // "That process" (new owner of the locked privilege) will now
+				  	  // get this "thread"
+					  
+                thread = 0;		  // hey, I'm paranoid about dead-variable clean-up!
                 qlen[me] = qlen[me]-1
                }
-            :: !qlen[me] -> break
+            :: !qlen[me] -> break	// aha, all the waiters have now been sent to the 'new party'
             od
-        :: !qlen[me] -> skip
+        :: !qlen[me] -> skip		// no waiters were forwarded to me, so I don't need to pass on the waiters
         fi;
         mutex[me] = 0;
-        assert (qlen[me] >= 0);
+
+	// a lot of time can pass here
+	// meanwhile those processes with outdated knowledge of the probable
+	// owner may still think that I have the "locked" privilege
+	// So in this interim, qlen[me] can very well grow!
+	
+        assert (qlen[me] >= 0);		// eh? I thought it would be 0 now. why >= 0 ??
     goto loop
 }
 
