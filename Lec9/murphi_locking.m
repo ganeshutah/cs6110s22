@@ -289,3 +289,387 @@ Endexists;
 -- end of locking.m
 -------------------------------------------------------
 
+-- BUG - counterexample!
+-- ./murphi_locking -s -p
+-- This program should be regarded as a DEBUGGING aid, not as a 
+-- certifier of correctness.
+-- Call with the -l flag or read the license file for terms
+-- and conditions of use.
+-- Run this program with "-h" for the list of options.
+-- 
+-- Bugs, questions, and comments should be directed to
+-- "melatti@di.uniroma1.it".
+-- 
+-- CMurphi compiler last modified date: Feb  4 2022
+-- Include files last modified date:    Jul 23 2021
+-- ==========================================================================
+-- 
+-- ==========================================================================
+-- Caching Murphi Release 5.5.0
+-- Finite-state Concurrent System Verifier.
+-- 
+-- Caching Murphi Release 5.5.0 is based on various versions of Murphi.
+-- Caching Murphi Release 5.5.0 :
+-- Copyright (C) 2009-2012 by Sapienza University of Rome.
+-- Murphi release 3.1 :
+-- Copyright (C) 1992 - 1999 by the Board of Trustees of
+-- Leland Stanford Junior University.
+-- 
+-- ==========================================================================
+-- 
+-- Protocol: murphi_locking
+-- 
+-- Algorithm:
+-- 	Simulation.
+-- 
+-- ==========================================================================
+-- Verbose option selected.  The following is the detailed progress.
+-- 
+-- Start Simulation :
+-- 
+-- Firing startstate Startstate 0, n:procT_3
+-- Obtained state:
+-- request_bufs[procT_1].Ar[0]:Undefined
+-- request_bufs[procT_1].Ar[1]:Undefined
+-- request_bufs[procT_1].Count:-1
+-- request_bufs[procT_2].Ar[0]:Undefined
+-- request_bufs[procT_2].Ar[1]:Undefined
+-- request_bufs[procT_2].Count:-1
+-- request_bufs[procT_3].Ar[0]:Undefined
+-- request_bufs[procT_3].Ar[1]:Undefined
+-- request_bufs[procT_3].Count:-1
+-- prob_owners[procT_1]:procT_3
+-- prob_owners[procT_2]:procT_3
+-- prob_owners[procT_3]:procT_3
+-- waiters[procT_1].Ar[0]:Undefined
+-- waiters[procT_1].Ar[1]:Undefined
+-- waiters[procT_1].Count:-1
+-- waiters[procT_2].Ar[0]:Undefined
+-- waiters[procT_2].Ar[1]:Undefined
+-- waiters[procT_2].Count:-1
+-- waiters[procT_3].Ar[0]:Undefined
+-- waiters[procT_3].Ar[1]:Undefined
+-- waiters[procT_3].Count:-1
+-- mutexes[procT_1]:false
+-- mutexes[procT_2]:false
+-- mutexes[procT_3]:false
+-- ar_states[procT_1]:ENTER
+-- ar_states[procT_2]:ENTER
+-- ar_states[procT_3]:ENTER
+-- hstates[procT_1]:HANDLE
+-- hstates[procT_2]:HANDLE
+-- hstates[procT_3]:HANDLE
+-- 
+-- Firing rule Try acquiring the lock, p:procT_3
+-- Obtained state:
+-- mutexes[procT_3]:true
+-- ar_states[procT_3]:TRYING
+-- 
+-- Firing rule Try acquiring the lock, p:procT_2
+-- Obtained state:
+-- mutexes[procT_2]:true
+-- ar_states[procT_2]:TRYING
+-- 
+-- Firing rule Try acquiring the lock, p:procT_1
+-- Obtained state:
+-- mutexes[procT_1]:true
+-- ar_states[procT_1]:TRYING
+-- 
+-- Firing rule If the lock is around, grab it, p:procT_3
+-- Obtained state:
+-- mutexes[procT_3]:false
+-- ar_states[procT_3]:LOCKED
+-- 
+-- Firing rule If the lock isn't around, send request out, p:procT_2
+-- Obtained state:
+-- request_bufs[procT_3].Ar[0]:procT_2
+-- request_bufs[procT_3].Count:0
+-- mutexes[procT_2]:false
+-- ar_states[procT_2]:BLOCKED
+-- 
+-- Firing rule If the lock isn't around, send request out, p:procT_1
+-- Obtained state:
+-- request_bufs[procT_3].Ar[1]:procT_1
+-- request_bufs[procT_3].Count:1
+-- mutexes[procT_1]:false
+-- ar_states[procT_1]:BLOCKED
+-- 
+-- Firing rule Locked -> Enter if no waiters, p:procT_3
+-- Obtained state:
+-- ar_states[procT_3]:ENTER
+-- 
+-- Firing rule In state HANDLE, if there is a waiting request, goto TRYGRANT, p:procT_3
+-- Obtained state:
+-- mutexes[procT_3]:true
+-- hstates[procT_3]:TRYGRANT
+-- 
+-- Firing rule In state TRYGRANT, if lock is free, grant it., p:procT_3
+-- Obtained state:
+-- request_bufs[procT_3].Ar[0]:procT_1
+-- request_bufs[procT_3].Ar[1]:Undefined
+-- request_bufs[procT_3].Count:0
+-- prob_owners[procT_2]:procT_2
+-- prob_owners[procT_3]:procT_2
+-- mutexes[procT_3]:false
+-- ar_states[procT_2]:LOCKED
+-- hstates[procT_3]:HANDLE
+-- 
+-- Firing rule In state HANDLE, if there is a waiting request, goto TRYGRANT, p:procT_3
+-- Obtained state:
+-- mutexes[procT_3]:true
+-- hstates[procT_3]:TRYGRANT
+-- 
+-- Firing rule Locked -> Enter if no waiters, p:procT_2
+-- Obtained state:
+-- ar_states[procT_2]:ENTER
+-- 
+-- Firing rule If lock not around, pass buck along to who we think is PO, p:procT_3
+-- Obtained state:
+-- request_bufs[procT_2].Ar[0]:procT_3
+-- request_bufs[procT_2].Count:0
+-- request_bufs[procT_3].Ar[0]:Undefined
+-- request_bufs[procT_3].Count:-1
+-- mutexes[procT_3]:false
+-- hstates[procT_3]:HANDLE
+-- 
+-- Firing rule Try acquiring the lock, p:procT_3
+-- Obtained state:
+-- mutexes[procT_3]:true
+-- ar_states[procT_3]:TRYING
+-- 
+-- Firing rule If the lock isn't around, send request out, p:procT_3
+-- Obtained state:
+-- request_bufs[procT_2].Ar[1]:procT_3
+-- request_bufs[procT_2].Count:1
+-- mutexes[procT_3]:false
+-- ar_states[procT_3]:BLOCKED
+-- 
+-- Firing rule Try acquiring the lock, p:procT_2
+-- Obtained state:
+-- mutexes[procT_2]:true
+-- ar_states[procT_2]:TRYING
+-- 
+-- Firing rule If the lock is around, grab it, p:procT_2
+-- Obtained state:
+-- mutexes[procT_2]:false
+-- ar_states[procT_2]:LOCKED
+-- 
+-- Firing rule In state HANDLE, if there is a waiting request, goto TRYGRANT, p:procT_2
+-- Obtained state:
+-- mutexes[procT_2]:true
+-- hstates[procT_2]:TRYGRANT
+-- 
+-- Firing rule Locked -> Enter if no waiters, p:procT_2
+-- Obtained state:
+-- ar_states[procT_2]:ENTER
+-- 
+-- Firing rule In state TRYGRANT, if lock is free, grant it., p:procT_2
+-- Obtained state:
+-- request_bufs[procT_2].Ar[1]:Undefined
+-- request_bufs[procT_2].Count:0
+-- prob_owners[procT_2]:procT_3
+-- prob_owners[procT_3]:procT_3
+-- mutexes[procT_2]:false
+-- ar_states[procT_3]:LOCKED
+-- hstates[procT_2]:HANDLE
+-- 
+-- Firing rule Try acquiring the lock, p:procT_2
+-- Obtained state:
+-- mutexes[procT_2]:true
+-- ar_states[procT_2]:TRYING
+-- 
+-- Firing rule Locked -> Enter if no waiters, p:procT_3
+-- Obtained state:
+-- ar_states[procT_3]:ENTER
+-- 
+-- Firing rule Try acquiring the lock, p:procT_3
+-- Obtained state:
+-- mutexes[procT_3]:true
+-- ar_states[procT_3]:TRYING
+-- 
+-- Firing rule If the lock is around, grab it, p:procT_3
+-- Obtained state:
+-- mutexes[procT_3]:false
+-- ar_states[procT_3]:LOCKED
+-- 
+-- Firing rule If the lock isn't around, send request out, p:procT_2
+-- Obtained state:
+-- request_bufs[procT_3].Ar[0]:procT_2
+-- request_bufs[procT_3].Count:0
+-- mutexes[procT_2]:false
+-- ar_states[procT_2]:BLOCKED
+-- 
+-- Firing rule In state HANDLE, if there is a waiting request, goto TRYGRANT, p:procT_3
+-- Obtained state:
+-- mutexes[procT_3]:true
+-- hstates[procT_3]:TRYGRANT
+-- 
+-- Firing rule Locked -> Enter if no waiters, p:procT_3
+-- Obtained state:
+-- ar_states[procT_3]:ENTER
+-- 
+-- Firing rule In state TRYGRANT, if lock is free, grant it., p:procT_3
+-- Obtained state:
+-- request_bufs[procT_3].Ar[0]:Undefined
+-- request_bufs[procT_3].Count:-1
+-- prob_owners[procT_2]:procT_2
+-- prob_owners[procT_3]:procT_2
+-- mutexes[procT_3]:false
+-- ar_states[procT_2]:LOCKED
+-- hstates[procT_3]:HANDLE
+-- 
+-- Firing rule Try acquiring the lock, p:procT_3
+-- Obtained state:
+-- mutexes[procT_3]:true
+-- ar_states[procT_3]:TRYING
+-- 
+-- Firing rule Locked -> Enter if no waiters, p:procT_2
+-- Obtained state:
+-- ar_states[procT_2]:ENTER
+-- 
+-- Firing rule If the lock isn't around, send request out, p:procT_3
+-- Obtained state:
+-- request_bufs[procT_2].Ar[1]:procT_3
+-- request_bufs[procT_2].Count:1
+-- mutexes[procT_3]:false
+-- ar_states[procT_3]:BLOCKED
+-- 
+-- Firing rule In state HANDLE, if there is a waiting request, goto TRYGRANT, p:procT_2
+-- Obtained state:
+-- mutexes[procT_2]:true
+-- hstates[procT_2]:TRYGRANT
+-- 
+-- Firing rule In state TRYGRANT, if lock is free, grant it., p:procT_2
+-- Obtained state:
+-- request_bufs[procT_2].Ar[1]:Undefined
+-- request_bufs[procT_2].Count:0
+-- prob_owners[procT_2]:procT_3
+-- prob_owners[procT_3]:procT_3
+-- mutexes[procT_2]:false
+-- ar_states[procT_3]:LOCKED
+-- hstates[procT_2]:HANDLE
+-- 
+-- Firing rule Locked -> Enter if no waiters, p:procT_3
+-- Obtained state:
+-- ar_states[procT_3]:ENTER
+-- 
+-- Firing rule Try acquiring the lock, p:procT_2
+-- Obtained state:
+-- mutexes[procT_2]:true
+-- ar_states[procT_2]:TRYING
+-- 
+-- Firing rule If the lock isn't around, send request out, p:procT_2
+-- Obtained state:
+-- request_bufs[procT_3].Ar[0]:procT_2
+-- request_bufs[procT_3].Count:0
+-- mutexes[procT_2]:false
+-- ar_states[procT_2]:BLOCKED
+-- 
+-- Firing rule In state HANDLE, if there is a waiting request, goto TRYGRANT, p:procT_2
+-- Obtained state:
+-- mutexes[procT_2]:true
+-- hstates[procT_2]:TRYGRANT
+-- 
+-- Firing rule Try acquiring the lock, p:procT_3
+-- Obtained state:
+-- mutexes[procT_3]:true
+-- ar_states[procT_3]:TRYING
+-- 
+-- Firing rule If lock not around, pass buck along to who we think is PO, p:procT_2
+-- Obtained state:
+-- request_bufs[procT_2].Ar[0]:Undefined
+-- request_bufs[procT_2].Count:-1
+-- request_bufs[procT_3].Ar[1]:procT_2
+-- request_bufs[procT_3].Count:1
+-- mutexes[procT_2]:false
+-- hstates[procT_2]:HANDLE
+-- 
+-- Firing rule If the lock is around, grab it, p:procT_3
+-- Obtained state:
+-- mutexes[procT_3]:false
+-- ar_states[procT_3]:LOCKED
+-- 
+-- Firing rule Locked -> Enter if no waiters, p:procT_3
+-- Obtained state:
+-- ar_states[procT_3]:ENTER
+-- 
+-- Firing rule In state HANDLE, if there is a waiting request, goto TRYGRANT, p:procT_3
+-- Obtained state:
+-- mutexes[procT_3]:true
+-- hstates[procT_3]:TRYGRANT
+-- 
+-- Firing rule In state TRYGRANT, if lock is free, grant it., p:procT_3
+-- Obtained state:
+-- request_bufs[procT_3].Ar[1]:Undefined
+-- request_bufs[procT_3].Count:0
+-- prob_owners[procT_2]:procT_2
+-- prob_owners[procT_3]:procT_2
+-- mutexes[procT_3]:false
+-- ar_states[procT_2]:LOCKED
+-- hstates[procT_3]:HANDLE
+-- 
+-- Firing rule In state HANDLE, if there is a waiting request, goto TRYGRANT, p:procT_3
+-- Obtained state:
+-- mutexes[procT_3]:true
+-- hstates[procT_3]:TRYGRANT
+-- 
+-- Firing rule If lock not around, pass buck along to who we think is PO, p:procT_3
+-- Obtained state:
+-- request_bufs[procT_2].Ar[0]:procT_3
+-- request_bufs[procT_2].Count:0
+-- request_bufs[procT_3].Ar[0]:Undefined
+-- request_bufs[procT_3].Count:-1
+-- mutexes[procT_3]:false
+-- hstates[procT_3]:HANDLE
+-- 
+-- Firing rule Locked -> Enter if no waiters, p:procT_2
+-- Obtained state:
+-- ar_states[procT_2]:ENTER
+-- 
+-- Firing rule In state HANDLE, if there is a waiting request, goto TRYGRANT, p:procT_2
+-- Obtained state:
+-- mutexes[procT_2]:true
+-- hstates[procT_2]:TRYGRANT
+-- 
+-- Firing rule Try acquiring the lock, p:procT_3
+-- Obtained state:
+-- mutexes[procT_3]:true
+-- ar_states[procT_3]:TRYING
+-- 
+-- Firing rule In state TRYGRANT, if lock is free, grant it., p:procT_2
+-- Obtained state:
+-- request_bufs[procT_2].Ar[0]:Undefined
+-- request_bufs[procT_2].Count:-1
+-- prob_owners[procT_2]:procT_3
+-- prob_owners[procT_3]:procT_3
+-- mutexes[procT_2]:false
+-- ar_states[procT_3]:LOCKED
+-- hstates[procT_2]:HANDLE
+-- 
+-- Firing rule Locked -> Enter if no waiters, p:procT_3
+-- Obtained state:
+-- ar_states[procT_3]:ENTER
+-- 
+-- Firing rule Try acquiring the lock, p:procT_2
+-- Obtained state:
+-- mutexes[procT_2]:true
+-- ar_states[procT_2]:TRYING
+-- 
+-- Firing rule If the lock isn't around, send request out, p:procT_2
+-- Obtained state:
+-- request_bufs[procT_3].Ar[0]:procT_2
+-- request_bufs[procT_3].Count:0
+-- mutexes[procT_2]:false
+-- ar_states[procT_2]:BLOCKED
+-- 
+-- 
+-- Status:
+-- 
+-- 	51 rules fired in simulation in 0.10s.
+-- 
+-- Error:
+-- 
+-- 	Deadlocked state found.
+-- 
+-- [ganesh@line-ganesh1 mux]$
+  
