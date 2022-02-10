@@ -1,0 +1,66 @@
+
+Verifying using SPIN; notes and cheat-sheet by Ganesh
+
+You have written a Promela program, and now you want to
+apply SPIN as a formal verification tool. What are the
+steps to take? I am hereby summarizing notes from various
+places. I'll cite my sources at the end, and refer to them
+in this text.
+
+1) Do spin -c for simulation, and columnated output
+2) Do spin -p for simulation, see process moves
+3) When done, spin -a to generate analyzer
+4) (Optional D): gcc -O2 -DMEMLIM=256 -DCOLLAPSE -DBITSTATE -DNP -o pan pan.c
+   -DSAFETY -DBFS -DNOREDUCE
+5) ./pan -a (acceptance) also -l for liveness
+   -m100000 (depth)
+   -m100000 -I (iterative shortening)   
+   -m40 (reduce to 40
+   ./pan -c3 : third trail
+   ./pan -c0 : count the errors   
+   ./pan -e -c0 : error trail per error
+   ./pan -d : draw SM
+
+6) spin -t -c spec.pml
+   -t trail sim
+   -c columnated S/R events
+   -f formula
+   -g print all global vars
+   -l print all local vars
+   -t[N] follow Nth sim trail
+   -r print recvs
+   -s print sends
+   -k trailfile -c spec.pml - trace back a specific trail
+   -jN skip the first N steps in simulation trail
+   -b no printfs in simulation
+
+./pan -m1000000 -I
+warning: -i and -I need -DREACH to work accurately
+gcc -DREACH -O2 -DMEMLIM=256 -DSAFETY -o pan pan.c
+
+spin -c -g -l -t -w -s -r dt2.pml
+
+spin -t -w -s -r dt2.pml
+   112	10:49	spin -g -l -t -w -s -r dt2.pml
+   113	10:50	spin -c -g -l -t -w -s -r dt2.pml
+   114	10:51	spin -g -l -t -w -s -r dt2.pml
+                spin -g -l -t -w Peterson_tso.prm
+
+References:
+
+[0] : Main usage manual
+      http://spinroot.com/spin/Man/Spin.html
+
+      Roadmap:
+      http://spinroot.com/spin/Man/Roadmap.html
+
+[1] Guidelines for ispin: http://spinroot.com/spin/Man/GettingStarted.html
+
+[2] Exercises: http://spinroot.com/spin/Man/1_Exercises.html
+
+[3] Cheat-sheet of directives: http://spinroot.com/spin/Doc/spin-quick-reference.pdf
+
+[4] Ruys Spin-doctor: https://core.ac.uk/download/pdf/11469945.pdf
+
+[5] Promela manual: http://spinroot.com/spin/Man/promela.html
+

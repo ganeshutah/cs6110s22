@@ -1,0 +1,26 @@
+// From Vaziri and Holzmann, changing flag to intrst for interested
+// Automatic Generation of Invariants in SPIN, 1998
+// 2-process mutual exclusion
+
+bool turn, intrst[2];
+byte ncrit;
+
+active [2] proctype user()
+{
+ assert (_pid==0 || _pid==1); // PID of 2 procs
+ again:
+ intrst[_pid]=1;        // _pid is interested
+ turn = _pid;         // it is _pid's turn
+
+ // if neither of these conds true, then wait here!
+ (0 == intrst[1 - _pid] // the other _pid is uninterested
+  ||          
+  turn == 1 - _pid);  // the other _pid yields turn
+
+ ncrit++;
+ assert(ncrit == 1);  // CS
+ ncrit--;
+
+ intrst[_pid] = 0;
+ goto again
+}

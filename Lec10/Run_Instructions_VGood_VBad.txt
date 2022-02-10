@@ -1,0 +1,14 @@
+javac VGood.java
+java -cp . VGood SomeNum
+
+Try
+
+java -cp . VGood 10000 ; java -cp . 10000
+
+Next
+!! ; !! to exponentiate command if necessary
+
+
+Now repeat this VBad.java
+
+--

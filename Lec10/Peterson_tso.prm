@@ -1,0 +1,56 @@
+// Modified Vaziri and Holzmann, changing flag to intrst for interested
+// Automatic Generation of Invariants in SPIN, 1998
+// 2-process mutual exclusion
+// But now simulating TSO effects on intrst
+
+bool turn;      // global
+bool intrst[2]; // global
+byte ncrit;     // global
+
+bool Lintrst[2]; // local to p0 and p1
+
+active [2] proctype user()
+{ bool Tintrst; // A temp which acquires intrst or Lintrst nondet
+
+ assert (_pid==0 || _pid==1); // PID of 2 procs
+ again:
+ Lintrst[_pid]=1;     // _pid is interested recorded in Lintrst
+ turn = _pid;         // it is _pid's turn 
+
+ printf("Lintrst[%d] = 1\n", _pid);
+ printf("turn = %d\n", _pid); 
+
+ if
+ :: Tintrst = intrst[1 - _pid];  // Get from global which may be lagging
+    printf("Tintrst = intrst[1 - %d]\n", _pid); 
+ :: Tintrst = Lintrst[1 - _pid]; // Get from other proc which is fresh
+    printf("Tintrst = Lintrst[1 - %d]\n", _pid); 
+ fi;
+
+ // if neither of these conds true, then wait here!
+ (0 == Tintrst // Get fresh or lagging
+  ||          
+  turn == 1 - _pid);  // the other _pid yields turn
+
+ printf("Whee, PID %d reached CS\n", _pid);
+
+ ncrit++;
+ assert(ncrit == 1);  // CS
+ ncrit--;
+
+ Lintrst[_pid] = 0; // Put into local, and eventually it will be flushed
+ goto again
+}
+
+// periodically copies Lintrst[2] to intrst[2]
+// Having Lintrst and intrst gives "split" views
+//
+active proctype copier() 
+{
+ do
+ :: intrst[0] = Lintrst[0];
+ :: intrst[1] = Lintrst[1]; 
+ od
+}
+
+
