@@ -1,0 +1,287 @@
+
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+
+\documentclass[11pt]{article}
+
+\usepackage{bera}
+%\renewcommand{\familydefault}{\rmfamily}
+
+\usepackage{graphicx,url}
+\usepackage{proof}
+\usepackage{framed}
+\usepackage{etaremune}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{paralist}
+\thispagestyle{empty}
+
+% 1. To get version suitable for students to populate,
+%    remove the contents of the \ignoreSoln{..body..}
+%
+% 2. To get a version suitable for generating PDF 
+%    without solutions, remove the #1 below
+%
+% 3. To generate solutions, keep the #1 below
+%
+% 4. Assigned grader fills \ignoreSoln{..body..}
+%    and also provides his/her feedback to student
+%    and policy followed for point deduction
+%    So design policy before grading begins.
+
+\newcommand{\ignoreSoln}[1]{#1}   
+%\newcommand{\ignoreModel}[1]{#1} 
+
+
+\newcommand{\bigset}[2]{\big\{\;#1\;:\;#2\;\big\}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Np}{\mathbb{N^{+}}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\DeclareMathSizes{14}{14}{14}{14}
+
+\begin{document}
+
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+
+%\renewcommand{\qedsymbol}{\filledbox}
+\newlength{\minpagw}
+\settowidth{\minpagw}{\hspace{40em}}
+
+\begin{center}
+\begin{large}
+  CS 6110, Spring 2022, Assignment 4  \\
+  Given 2/11/22 -- Due 2/18/22 by 11:59 pm via your Github 
+  \ \\
+%  \ \\  
+    {  {\Large\bf NAME: } \hfill {\Large\bf UNID: }\hspace{4cm} }
+          \ \\
+\end{large}
+
+\end{center}
+
+\noindent{\bf CHANGES:\/} {\bf Please look for lines beginning with underlined words when they are made.}
+         {\tiny none yet.}
+
+         \noindent {\bf Answering, Submission:\/}
+         Have these on your private Github:
+         a folder Asg4/ containing your submission, which in detail comprises:
+         \begin{compactitem}
+         \item A clear README.md describing your files.
+         \item Files that you ran + documentation (can be integrated in one place).
+         \item A high level summary of your cool findings + insights + learning -- briefly reported in
+           a nicely bulletted fashion in your PDF submission.
+         \end{compactitem}
+
+         \noindent {\bf Start Early, Ask Often!}
+Orientation videos and further help will be available (drop a note anytime
+on Piazza for help). {\em I encourage students constructing answers jointly!}
+
+\begin{enumerate}
+  
+%- 1 ----------------------------------------------------------------
+\item (50 points - 25 for pre and 25 for partial - Alloy)
+  To learn Alloy, you can get a PDF copy of the {\bf older} edition of the book
+  by Daniel Jackson called ``Software Abstractions.''
+  %
+  I've found a PDF by searching for the above.
+  %
+  Since this is a very old edition,
+  this is probably OK.
+  %
+  Other tutorials are\footnote{There is one more fantastic web-based one (I sent it to TM John
+  once, but forgot where it is.)}
+
+  \url{https://haslab.github.io/formal-software-design/overview/index.html}
+  \url{https://www.cs.montana.edu/courses/se422/currentLectures/AlloyIntro.pdf} and
+  \url{https://alloytools.org/tutorials/online/}.
+  %
+  %
+  Start reading through this book and also Roger Costello's slides
+  on the class Github.
+  
+\item[]  We have to understand mathematical relations properly before
+  we can use Alloy.
+  %
+  Read my chapter in CEATL on relations (the chapter featured
+  in the tutorial I recorded).
+  %
+  This is CS 2100 material---so, leaving it for your self-study.
+
+\item[]    Here are some experiments I ran to study preorders and partial orders.
+\item[] TL;DR {\em The intersection of a preorder and its inverse is not an
+  identity relation.}
+\item[] TL;DR {\em The intersection of a partial order and its inverse is  an
+   identity relation.}  
+\item[] These are the conclusions to be drawn in the experiments to follow.
+  
+\item[]  Your task is to fill out
+    the ellipsed portions (where I provide an English phrase
+    for you to fill as \verb|<text>|) and answer the questions below
+    (questions begin with ``Q:'' and comments by ``C:''):
+
+    \begin{footnotesize}
+\begin{verbatim}
+-- C: We are defining "some old" relation 'pre'
+-- C: nd slowly endowing it with the properties that make it a preorder
+--
+sig S { pre  :  set S } -- (1) C: This defines 'pre' as a binary relation over S
+fact  { some pre }      -- (2) Q: Can you explain what this means? 
+fact  { <state here that pre is reflexive>  } -- (4) Q: answer the question below
+fact  { <state here that pre is transitive> } -- (5) Q: answer the question below
+assert preAndPreinvIden
+ { <FALSELY Assert that the intersection of pre and its inverse is identity.> }
+  -- (6) Q: answer the question below
+check preAndPreinvIden for exactly 3 S
+  -- (7) Q: Report on the result of this check
+run {} for exactly 4 S
+  -- (8) Q: If the check in (7) fails, comment (7) and run this to diagnose why
+\end{verbatim}
+    \end{footnotesize}
+    
+    \begin{compactitem}
+    \item[] (1) {\tt pre} is introduced as a ``plain old'' relation
+    \item[] (2) Explain what this assertion does for {\tt pre}
+    \item[] (3) At this juncture, ``run'' for ``{\tt exactly 4 S}''
+      and show the models generated.
+    \item[] (4) How did you endow 'pre' with the property that it is reflexive? Explain.
+    \item[] (5) Explain how you endowed 'pre' to be transitive
+    \item[] (6) How did you falsely assert that the intersection of pre and its inverse is identity?
+    \item[] (7) Did this check pass? You can use a pull-down menu and run this check.
+      If the check in (7) failed, look at the counterexample and explain why it failed.
+    \item[] (8) Also run this ``run'' statement and see the instance
+      generated. Does the instance generated provide another explanation as to why the
+      above {\tt check} failed?
+      
+    \item[] (9) Now, define a {\em partial order} along the same lines as below.
+      Instead of  the assertion {\tt preAndPreinvIden},
+      define {\tt partAndPartinvIden},      where we changed ``pre''
+      to ``part'' (partial order).
+      Did this check pass? Justify the answer.
+    \end{compactitem}
+
+%- 2 ----------------------------------------------------------------
+\item (10 points, Store Buffer)
+  Run the store-buffer example created in Promela. Argue that
+  it simulates the situation of the writes being buffered before
+  it goes to memory (as in TSO which is
+  described at \url{https://en.wikipedia.org/wiki/Memory_ordering} and
+  elsewhere).
+  %
+  Observe the assert failure and explain the interleaving causing the
+  bug. (The file in question is \verb|Peterson_tso.prm|.)
+  
+\begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+\end{minipage}
+
+%- 3 ----------------------------------------------------------------
+\item (10 points, The Java example with volatiles)
+  Read-up on Java volatiles. Run the example \verb|VBad.java|.
+  Insert volatiles selectively (just for req or just for ack).
+  Does that correct the apparent hang? (I don't know the answer
+  but thought you'd like to try.) To get the apparent hang,
+  first you must leave out the volatile totally and get the
+  hangs on your machine. {\em Then} try to add one volatile
+  and see if you get a hang. Explain your observations. (Bound
+  your empirical testing to say an hour.)
+
+  \begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+  \end{minipage}
+
+
+%- 4 ----------------------------------------------------------------
+\item (10 points, the MWGC game)
+  Write a pseudo-code for a DFS model-checker by modifying the BFS model-checker's
+  pseudo-code here
+  \url{https://www.cs.utah.edu/~kirby/Publications/Kirby-33.pdf}.
+  %
+  Do you now understand why a model-checker does not ``infinitely loop?''
+  %
+  Now, run the murphi model I wrote today (you should be able to recreate it from
+  memory or the recording) and run it in DFS.
+  %
+  Does the error-trace (winning sequence) get longer?
+  %
+  Can you go after longer error traces (by not stopping at the first error)?
+  %
+  Try to produce a longer error trace than with DFS.
+  %
+  Describe that ``winnning sequence'' (error trace for the negated invariant).
+
+  \begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+\end{minipage}  
+  
+%- 5 ----------------------------------------------------------------  
+\item (20 points, DCL)
+  Read Pugh's analysis of the Java Memory Model through the URL
+  \url{https://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html}
+  and describe what weak memory ordering issues are discussed there?
+  (This is a classic website that sowed the whole area of understanding
+  weak memory models; Java was supposed to be a ``safe'' language, but
+  with weak memory, you could export an object reference before
+  initializing the object---thus leaking a secret that you did not
+  wipe out.)
+  %
+\begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+\end{minipage}    
+%- end ----------------------------------------------------------------  
+
+
+\end{enumerate}
+
+\end{document}
