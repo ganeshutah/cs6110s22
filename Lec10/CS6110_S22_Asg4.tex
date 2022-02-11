@@ -109,12 +109,10 @@ on Piazza for help). {\em I encourage students constructing answers jointly!}
   this is probably OK.
   %
   Other tutorials are
-
+  \url{http://alloy4fun.inesctec.pt/}
   \url{https://haslab.github.io/formal-software-design/overview/index.html}
   \url{https://www.cs.montana.edu/courses/se422/currentLectures/AlloyIntro.pdf} and
   \url{https://alloytools.org/tutorials/online/}.
-  
-  \url{http://alloy4fun.inesctec.pt/} is a nice web interface; you can find a link at the bottom to some pre-written example alloy scripts to try out.
   %
   %
   Start reading through this book and also Roger Costello's slides
@@ -188,7 +186,8 @@ run {} for exactly 4 S
   described at \url{https://en.wikipedia.org/wiki/Memory_ordering} and
   elsewhere).
   %
-  Observe the assert failure and explain the interleaving causing the
+  Observe the assert failure and explain the interleaving (via
+  an error trace) causing the
   bug. (The file in question is \verb|Peterson_tso.prm|.)
   
 \begin{minipage}{\minpagw}
@@ -210,9 +209,19 @@ run {} for exactly 4 S
   Does that correct the apparent hang? (I don't know the answer
   but thought you'd like to try.) To get the apparent hang,
   first you must leave out the volatile totally and get the
-  hangs on your machine. {\em Then} try to add one volatile
+  hangs on your machine.
+  Then {\em explain the reason for this hang.} (Why might it be
+  happening? What reordering in the protocol can cause it to
+  change. Assume only store/load reorderings.\footnotemark)
+  %
+  {\em Then} try to add one volatile
   and see if you get a hang. Explain your observations. (Bound
   your empirical testing to say an hour.)
+  %
+  \footnotetext{All attempts to read the generated code failed.
+    We assume there is no advantage gained by the compiler
+    reordering such a short program's instructions. Thus it
+    must be the hardware store-buffer and/or cache of the processor.}
 
   \begin{minipage}{\minpagw}
   \fbox{%
@@ -234,6 +243,32 @@ run {} for exactly 4 S
   \url{https://www.cs.utah.edu/~kirby/Publications/Kirby-33.pdf}.
   %
   Do you now understand why a model-checker does not ``infinitely loop?''
+  %
+  For definiteness, assume that the model-checker has an example as follows
+  and follow a BFS strategy to draw out its state-space, and then a DFS
+  strategy.
+  %
+  Assume {\tt p1} is run before {\tt p2}. (Just to
+  reduce ambiguity, I'll tell you
+  the obvious: in the DFS ``left-to-right'' order;
+  thus ``depth exploration'' with respect to {\tt p1} will finish it before
+  touching anything in {\tt p2}.)
+  %  
+  \begin{verbatim}
+    \begin{footnotesize}
+bit x;
+active proctype p1()
+{do
+ :: x++ ; x++ 
+ od
+}
+active proctype p2()
+{do
+ :: x-- ; x-- 
+ od
+}
+  \end{footnotesize}
+  \end{verbatim}
   %
   Now, run the murphi model I wrote today (you should be able to recreate it from
   memory or the recording) and run it in DFS.
@@ -262,7 +297,11 @@ run {} for exactly 4 S
 \item (20 points, DCL)
   Read Pugh's analysis of the Java Memory Model through the URL
   \url{https://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html}
-  and describe what weak memory ordering issues are discussed there?
+  and describe what weak memory ordering issues are discussed there.
+  %
+  In neat bullets, list all the memory ordering issues that cause
+  the double-checked locking idiom to fail.
+  % 
   (This is a classic website that sowed the whole area of understanding
   weak memory models; Java was supposed to be a ``safe'' language, but
   with weak memory, you could export an object reference before
