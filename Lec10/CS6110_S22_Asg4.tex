@@ -237,8 +237,9 @@ run {} for exactly 4 S
 
 
 %- 4 ----------------------------------------------------------------
-\item (10 points, the MWGC game)
-  Write a pseudo-code for a DFS model-checker by modifying the BFS model-checker's
+\item (10 points, the Man-Wolf-Goat-Cabbage or mwgc game)
+  Write a pseudo-code for
+  a DFS model-checker by modifying the BFS model-checker's
   pseudo-code here
   \url{https://www.cs.utah.edu/~kirby/Publications/Kirby-33.pdf}.
   %
@@ -270,8 +271,32 @@ active proctype p2()
 \end{verbatim}
   \end{footnotesize}    
   %
-  Now, run the murphi model I wrote today (you should be able to recreate it from
+  \begin{enumerate}
+\item In mwgc, {\bf change the definition of safe} to something
+  else (obtaine from a completely different perspective).
+  Show that these expressions (the one I wrote and the
+  one you wrote) are equivalent, using a BDD.
+  %
+  {\bf This is SIMPLE but CRUCIAL}: once we had to chase down
+  a bug in an {\em expert}'s code---and after a month we found
+  it was due to a predicate in a switch statement!
+  %
+  {\em Such bugs are best prevented than detected later or let
+    it kill someone or destroy something}---if we can prevent it.
+  %
+  So make it a practice to use BDD/SAT tools to verify conditions
+  you write in production code.
+  %
+\item[]   Once shown equivalent (or you argue that your definition of {\em safe}
+  is better), proceed with the following steps.
+  
+
+\item  Now, run the murphi model I wrote today
+  for {\tt mwgc}
+  (you should be able to recreate it from
   memory or the recording) and run it in DFS.
+  \end{enumerate}
+  %
   %
   Does the error-trace (winning sequence) get longer?
   %
