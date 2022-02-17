@@ -1,4 +1,13 @@
+/* setup of https://haslab.wordpress.com/2011/07/21/model-checking-graph-properties-using-alloy/
+While developing an algorithm for fast distributed computation of a graph diameter and radius, some of my colleagues had a conjecture about graph topology that, if true, would enable an aggressive optimization of the algorithm.
+*/
+
 -- OTHER RESOURCES
+-- http://reports-archive.adm.cs.cmu.edu/anon/ml2008/CMU-ML-08-117.pdf - soc graphs - diameter est
+-- https://en.wikipedia.org/wiki/MapReduce
+-- https://en.wikipedia.org/wiki/Antipodes - NZ antipode is Spain
+-- https://www.cs.cmu.edu/~emc/papers/Books%20and%20Edited%20Volumes/Bounded%20Model%20Checking.pdf
+-- https://www.princeton.edu/~chaff/publication/SAT04_search_qbf_diameter.pdf
 -- https://reference.wolfram.com/language/ref/GraphDiameter.html
 -- https://mathworld.wolfram.com/GraphPeriphery.html
 -- https://mathworld.wolfram.com/GraphEccentricity.html
