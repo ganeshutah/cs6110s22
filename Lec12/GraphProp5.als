@@ -1,3 +1,9 @@
+-- OTHER RESOURCES
+-- https://reference.wolfram.com/language/ref/GraphDiameter.html
+-- https://mathworld.wolfram.com/GraphPeriphery.html
+-- https://mathworld.wolfram.com/GraphEccentricity.html
+-- https://mathworld.wolfram.com/Antipode.html
+
 -- Graph Properties Haslab --
 -->> GraphProp4 <<--
 
