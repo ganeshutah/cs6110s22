@@ -1,0 +1,118 @@
+https://adalogics.com/blog/symbolic-execution-with-klee
+
+==
+
+29  clang -I ../../include -emit-llvm -g -c binsrch.c -o binsrch.bc
+   32  klee --libc=uclibc --posix-runtime  binsrch.bc 
+   34  ls klee-out-0/
+   35  ls klee-last
+   38  ktest-tool klee-last/test000001.ktest 
+   39  ktest-tool klee-out-0/test000001.ktest 
+   58  export LD_LIBRARY_PATH=/home/klee/klee_build/lib/:$LD_LIBRARY_PATH
+   59  gcc -I ../../include -L /home/klee/klee_build/lib binsrch.c -lkleeRuntest
+   62  KTEST_FILE=klee-last/test000001.ktest ./a.out
+   63  KTEST_FILE=klee-out-0/test000001.ktest ./a.out
+   64  more binsrch.c 
+   65  ls
+   66  cd ..
+   67  ls
+   68  cd sort
+   69  ls
+   70  history
+klee@f88364af576a:~/klee_src/examples/sort$
+
+
+  more get_sign.c 
+   81  clang -I ../../include -emit-llvm -g -c -O0 -Xclang -disable-O0-optnone get_sign.c 
+   82  ls -lt
+   83  ls
+   84  klee get_sign.bc 
+   85  ls
+   86  ls klee-last
+   87  ktest-tool klee-last/test000001.ktest 
+   88  ls
+   89  ktest-tool klee-last/test000002.ktest 
+   90  gcc -I ../../include -L /home/klee/klee_build/lib get_sign.c -lkleeRuntest
+   91  KTEST_FILE=klee-last/test000001.ktest ./a.out
+   92  KTEST_FILE=klee-last/test000002.ktest ./a.out
+   93  ls -l
+   94  KTEST_FILE=klee-last/test000001.ktest ./a.out
+   95  echo $?
+   96  KTEST_FILE=klee-last/test000002.ktest ./a.out
+   97  echo $?
+   98  KTEST_FILE=klee-last/test000003.ktest ./a.out
+   99  echo $?
+  100  history
+
+run without assumes initially
+
+===
+
+134  histor
+  135  history
+  136  clang -I ../../include -emit-llvm -g -c -O0 -Xclang -disable-O0-optnone binsrch.c 
+  137  klee binsrch.bc
+  138  emacs -nw binsrch.c
+  139  clang -I ../../include -emit-llvm -g -c -O0 -Xclang -disable-O0-optnone binsrch.c 
+  140  history
+  141  klee binsrch.bc
+  142  emacs -nw binsrch.
+  143  history
+  144  clang -I ../../include -emit-llvm -g -c -O0 -Xclang -disable-O0-optnone binsrch.c 
+  145  klee binsrch.bc
+  146  emacs -nw binsrch.
+  164  ls klee-last/
+  165  KTEST_FILE=klee-last/test000009.ktest ./a.out
+  166  history
+klee@f88364af576a:~/klee_src/examples/binsrch$ 
+
+assume in separate lines
+
+===
+
+gcc -DINITON -DPRINTON -I ../../include binsrch.c
+
+./a.out
+
+clang -DKLEEON -I ../../include -emit-llvm -g -c -O0 -Xclang -disable-O0-optnone binsrch.c
+
+klee binsrch.bc
+
+ktest-tool klee-last/test000001.ktest
+
+ktest-tool klee-last/test000002.ktest
+
+gcc -DKLEEON -DPRINTON -I ../../include -L /home/klee/klee_build/lib binsrch.c -lkleeRuntest
+
+KTEST_FILE=klee-last/test000001.ktest ./a.out
+
+KTEST_FILE=klee-last/test000002.ktest ./a.out
+
+
+
+==
+
+gcc -DINITON -DPRINTON -I ../../include hardToHit.c
+
+./a.out
+
+clang -DKLEEON -I ../../include -emit-llvm -g -c -O0 -Xclang -disable-O0-optnone hardToHit.c
+
+klee hardToHit.bc
+
+echo "see we already hit the assert in concolic"
+
+echo "now to see the tests synthesized"
+
+ls -ld klee-last # has the tests
+
+ktest-tool klee-last/test000002.ktest
+
+ktest-tool klee-last/test000001.ktest # test that failed the assert!
+
+gcc -DKLEEON -DPRINTON -I ../../include -L /home/klee/klee_build/lib hardToHit.c -lkleeRuntest
+
+KTEST_FILE=klee-last/test000002.ktest ./a.out
+
+KTEST_FILE=klee-last/test000001.ktest ./a.out
+
