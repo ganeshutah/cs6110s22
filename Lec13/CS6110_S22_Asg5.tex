@@ -1,0 +1,304 @@
+
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+
+\documentclass[11pt]{article}
+
+\usepackage{bera}
+%\renewcommand{\familydefault}{\rmfamily}
+
+\usepackage{graphicx,url}
+\usepackage{proof}
+\usepackage{framed}
+\usepackage{etaremune}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{paralist}
+\thispagestyle{empty}
+
+% 1. To get version suitable for students to populate,
+%    remove the contents of the \ignoreSoln{..body..}
+%
+% 2. To get a version suitable for generating PDF 
+%    without solutions, remove the #1 below
+%
+% 3. To generate solutions, keep the #1 below
+%
+% 4. Assigned grader fills \ignoreSoln{..body..}
+%    and also provides his/her feedback to student
+%    and policy followed for point deduction
+%    So design policy before grading begins.
+
+\newcommand{\ignoreSoln}[1]{#1}   
+%\newcommand{\ignoreModel}[1]{#1} 
+
+
+\newcommand{\bigset}[2]{\big\{\;#1\;:\;#2\;\big\}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Np}{\mathbb{N^{+}}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\DeclareMathSizes{14}{14}{14}{14}
+
+\begin{document}
+
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+
+%\renewcommand{\qedsymbol}{\filledbox}
+\newlength{\minpagw}
+\settowidth{\minpagw}{\hspace{40em}}
+
+\begin{center}
+\begin{large}
+  CS 6110, Spring 2022, Assignment 5  \\
+  Given 2/22/22 -- Due 3/3/22 by 11:59 pm via your Github 
+  \ \\
+%  \ \\  
+    {  {\Large\bf NAME: } \hfill {\Large\bf UNID: }\hspace{4cm} }
+          \ \\
+\end{large}
+
+\end{center}
+
+\noindent{\bf CHANGES:\/} {\bf Please look for lines beginning with underlined words when they are made.}
+         {\tiny none yet.}
+
+         \noindent {\bf Answering, Submission:\/}
+         Have these on your private Github:
+         a folder Asg4/ containing your submission, which in detail comprises:
+         \begin{compactitem}
+         \item A clear README.md describing your files.
+         \item Files that you ran + documentation (can be integrated in one place).
+         \item A high level summary of your cool findings + insights + learning -- briefly reported in
+           a nicely bulletted fashion in your PDF submission.
+         \end{compactitem}
+
+         \noindent {\bf Start Early, Ask Often!}
+Orientation videos and further help will be available (drop a note anytime
+on Piazza for help).
+
+I encourage students constructing answers jointly! {\em But that does not
+mean copy solutions, but discuss the question plus surrounding issues.}
+
+\begin{enumerate}
+  
+%- 1 ----------------------------------------------------------------
+\item (20 points) Three models for trees are below (these
+  are from
+  \url{https://stackoverflow.com/questions/41707898/is-there-a-better-alloy-model-of-a-tree}).
+  %
+  I saw the beginnings of Costello's tree solution (which Daniel Jackson, author of Alloy, improves upon) and wrote
+  my own solution.
+  %
+  Thus, there are three tree models below.
+  %
+  Study them and do the problems stated below them:
+  \begin{scriptsize}
+\begin{verbatim}
+
+/*-- BEGIN: common to all three tree definitions --*/
+
+sig Node {
+  tree: set Node
+}
+
+one sig root extends Node {} // root is a subset of Node
+
+/*-- END : common to all three tree definitions --*/
+
+pred GGTree{
+ no n : Node | root in n.^tree // Q-1
+ --
+ no n : Node | n in n.^tree    // Q-2
+ --
+ all n : Node - root | n in root.^tree // Q-3
+ -- 
+ all n : Node |
+ all disj n1, n2 : n.tree |    // Q-4
+   no (n1.*tree & n2.*tree) 
+}
+  \end{verbatim}
+  \end{scriptsize}
+
+\begin{itemize}
+\item[] Q-1,2: Express what these definitions are saying, in English.
+Why can't these definitions use \verb|*|? What happens if you do that?
+ Generate
+a few tree instances (models) and show what happens if you use \verb|*| for Q-1 and Q-2?.
+%
+{\em To generate instances,} you must remove the "pred" temporarily, and express its
+contents as signature facts.
+This is what you would be doing initially in your work on creating a model, anyhow.
+Then follow such a modified definition with a
+\verb|run {} for 3|,
+or
+\verb|run {} for exactly 10 node|
+or
+similar notations (consult the ``Red'' Alloy book mentioned on the class website for details).
+Then execute, and the ``run'' gives you the instances I'm looking for.
+
+\item[] Q-3: Express what this definition is saying, in English.
+Why do we need \verb|Node - root|? Why can't you use \verb|Node| here?
+Again show by generating instances saying what happens if you do that.
+
+\item[] Q-4: What is this saying in English?
+What happens if you leave out \verb|disj|?
+Show by generating some instances.
+
+\item Now put the {\tt pred} definitions back. So you have three "pred" definitions as presented below.
+
+\begin{scriptsize}
+\begin{verbatim}
+
+pred GGTree{
+ no n : Node | root in n.^tree
+ --
+ no n : Node | n in n.^tree
+ --
+ all n : Node - root | n in root.^tree
+ -- 
+ all n : Node |
+ all disj n1, n2 : n.tree |  
+   no (n1.*tree & n2.*tree) 
+}
+
+
+pred DJTree {
+    Node in root.*tree // all reachable
+    no iden & ^tree // no cycles
+    tree in  Node lone -> Node // Q-5
+    }
+
+pred CostelloTree {
+    // No node above root (no node maps to root)
+    no tree.root
+    // Can reach all nodes from root                
+    all n: Node - root | n in root.^tree
+    // No node maps to itself (irreflexive) 
+    no iden & tree
+    // No cycles                    
+    no n: Node | Node in n.^tree
+    // All nodes are distinct (injective)           
+    tree.~tree in iden -- need this
+}
+\end{verbatim}
+\end{scriptsize}
+
+\item[] Explain the line tagged Q-5, above. You will find the constraints of signatures explained
+  in the ``Red'' book. Look around Page 78, Section 3.6.3.
+
+The goal is to show the equivalences below:
+
+\begin{enumerate}
+\item Issue \verb|check {GGTree iff DJTree} for 5| and see if the definitions are equivalent.
+
+\item Just break the Q-1 to have \verb|*| and not the correct \verb|^|. Do the ``\verb|iff|''  check above.
+Do you get an understandable counterexample? Describe it.
+
+\item Issue \verb|check {CostelloTree iff DJTree} for 5| and see if the definitions are equivalent.
+\end{enumerate}
+
+
+\end{itemize}
+  
+\begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+\end{minipage}  
+
+
+%- 2 ----------------------------------------------------------------
+\item (20 points)
+\begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+\end{minipage}  
+
+
+%- 3 ----------------------------------------------------------------
+\item (20 points)
+\begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+\end{minipage}  
+
+
+%- 4 ----------------------------------------------------------------
+\item (20 points)
+\begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+\end{minipage}  
+
+
+%- 5 ----------------------------------------------------------------
+\item (20 points)
+\begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+\end{minipage}  
+
+
+
+
+
+%- end ----------------------------------------------------------------  
+
+
+\end{enumerate}
+
+\end{document}
