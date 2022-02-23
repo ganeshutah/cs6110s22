@@ -296,21 +296,26 @@ Do you get an understandable counterexample? Describe it.
 \begin{verbatim}
 PIAZZA posting:
 
-I changed 8 to 5 in the HW specification (with 5 itself, it generates 120 tests). With 8, it takes forever. Why torture you?
+I changed 8 to 5 in the HW specification (with 5 itself, it generates 120 tests).
+With 8, it takes forever. Why torture you?
 
 Also try and remove printf etc before generating tests.
 
 One can write a script to automatically run for all the synthesized tests.
 
-For "breaking" qsort, you can do it in a certain way (to make our life easy, I'll suggest one):
+For "breaking" qsort, you can do it in a certain way (to make our life easy,
+I'll suggest one):
 
 1) make the pivot = the first element of the incoming array
 
-2) Write a broken qsort by checking the pivot first. If the pivot is < 5 (say), break the qsort (let it return w/o sorting). For >= 5, make the qsort sort the array
+2) Write a broken qsort by checking the pivot first. If the pivot is < 5 (say),
+break the qsort (let it return w/o sorting). For >= 5, make the qsort sort the array
 
 3) Try it and keep telling me what you find out.
 
-This shows that symbolic execution of C is not "that free" - yet highly automated. Also I'll read-up on how to declare larger arrays and maybe make the elements selectively symbolic (only some symbolic).
+This shows that symbolic execution of C is not "that free" - yet highly automated.
+Also I'll read-up on how to declare larger arrays and maybe make the elements
+selectively symbolic (only some symbolic).
 
 Ganesh
   \end{verbatim}
