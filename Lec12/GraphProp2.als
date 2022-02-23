@@ -37,7 +37,7 @@ sig Node { -- (1a) -- (1) refined
 }
 
 
-/* == TYPE THESE AT THIS POINT == */
+/* == TYPE THESE AT THIS POINT == 
 
 Node
 Node$0.dist

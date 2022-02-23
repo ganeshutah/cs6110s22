@@ -13,7 +13,7 @@ Const
 -------------------------------------------------------
 
 Type
-  procT : Scalarset (Nprocs);
+  procT : Scalarset (Nprocs);  -- 1..3 but also conveys symmetry
 
   request_bufT :record
 		  	Ar: Array[0..Nprocs-2] of procT;

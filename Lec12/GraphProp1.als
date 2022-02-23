@@ -19,6 +19,7 @@ open util/ordering[Nat]  -- (5) Generic total ordering, instantiated by Nat; giv
  } 
 
 
+
 -- Signature facts constraining Node and adj --
 fact {
  adj = ~adj       -- symm adj rel  -- (2)

@@ -1,10 +1,10 @@
-public class VGood extends Thread{
+public class VBad extends Thread{
     int tid;
-    VGood(int i) { tid = i; }
+    VBad(int i) { tid = i; }
     static int N = 100;
-    static //volatile
+    static  volatile
 	boolean req = false;
-    static //volatile
+    static  volatile
 	boolean ack = false;    
   public void run() {
 	int temp;
@@ -35,8 +35,8 @@ public class VGood extends Thread{
 	} 
 	catch (Exception e) {
 	} 
-	Thread t0 = new VGood(0);
-	Thread t1 = new VGood(1);
+	Thread t0 = new VBad(0);
+	Thread t1 = new VBad(1);
 	t0.start();
 	t1.start();
 	try {
