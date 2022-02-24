@@ -1,0 +1,181 @@
+--https://alloy.readthedocs.io/en/latest/language/predicates-and-functions.html
+--EXAMPLES OF ALLOY DEFINITIONS AND USAGE
+
+some sig  P ...		-- non-empty set P
+some P { l : set P }   	-- a binary relation in P x P - "likes" or "l" here
+
+sig  pat  in P {}    	-- pat is a subset of P -- helps define the 'p' (patients) unary relation 
+sig  doc  in P {}    	-- doc is a subset of P -- helps define the 'd' (doctor) unary relation; could overlap with pat
+sig  quk  in P {}    	-- similarly for quk -  -- helps define the 'q' unary reln, and could overlap with the above
+
+--sig  foo1 extends P {}  -- would have also been a subset of P
+--sig  foo2 extends P {}  -- would have also been a subset of P and disjoint from foo1 
+--sig  foo3 extends P {}  -- would have also been a subset of P and disjoint from foo1 and foo2
+     	  	    	-- BUT it is still possible that P - (foo1+foo2+foo3) is nonempty)
+			-- In other words, foo1, foo2, and foo3 do not PARTITION P
+			
+			-- Suppose you want to partition; then use the following
+--abstract sig P1 ... 	-- No instances yet
+-- sig bar1 extends P1..
+-- sig bar2 extends P1..
+-- sig bar3 extends P1.. -- NOW we would have bar1+bar2+bar3 = P1
+
+-- some patients like every doctor : state as a fact
+fact { some x : pat | all y : doc | x->y in l }
+----alternately
+fact { some x : P | p[x] and (all y : P | d[y] => x->y in l) }
+
+-- no patient likes a quack : state as a fact
+fact { all x,y : P | p[x] and q[y] => x->y not in l }
+
+-- check that no doctor is a quack : assert as docthm and check
+assert docthm { all x : P | d[x] => !q[x] }
+
+check docthm for 8
+
+---
+
+In classical FOL, the proof will go as follows. We draw all quantified vars from "people" or "P"
+
+A1: exists x in P : p(x) and all y in P : d(y) -> l(x,y)
+
+A2: all x,y in P: p(x) and q(y) => !l(x,y)
+
+G : all x in P: d(x) => !q(x)
+
+NG: exists x in P: d(x) & q(x)
+
+--
+
+A1 skolemize x with p0:
+A1sk: p(p0) and all y in P : d(y) -> l(p0,y)
+
+NG skolemize x wih d0:
+NGsk:  d(d0) & q(d0)
+
+A1sk with d0 specialization:
+A1sksp:  p(p0) and [ d(d0) -> l(p0,d0) ]
+
+A1sksp and NGsk MP:
+MP1:     p(p0) and l(p0,d0)
+
+A2 : all x,y in P: p(x) and q(y) => !l(x,y)
+
+A2sp with p0 and d0:
+MP2:     p(p0) and q(d0) => !l(p0,d0)
+
+MP1 and NGsk and MP2:
+       !l(p0,d0)
+
+Contra with MP1
+
+---
+
+An SMT-based solver can do this? check!
+
+---
+
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --
+
+-- How to introduce FOL zero-ary functions or constants
+
+one sig a,b extends U { } -- constants 'a' in U - guaranteed within U
+
+some sig U {
+ p1 : set U, -- p1 is an arbitrary unary predicate
+ q1 : set U, -- q1 is an arbitrary unary predicate
+ r0  : lone U, -- r0 is for the simulation of a zero-ary pred -- BOOL
+ r1  : lone U, -- r1 is for .. another zero-ary pred -- BOOL
+} 
+
+pred R0 { some a.r0 } -- Got one Bool Var! True if r0 is suitably assigned!
+//-- sanity assert r0true { some a.r0 }
+//-- may not be true - depends on how r0 is assigned!
+
+pred R1 { some a.r1 } -- Got another Bool var!
+
+assert r0a { R0 => (R1 => R0) } -- Now we can prove Boolean facts!
+
+check r0a
+
+
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --
+
+some sig U {}
+
+sig S1 in U {} 
+
+pred p1[x:U]   { x in S1 }             -- general-enough 1-ary pred
+
+pred p2[x,y:U] { x in S1 and y in S2 } -- general-enough 2-ary pred
+
+-- This is general-enough because
+-- S1, S2 can grow from {} to the full U, and it allows x,y to be
+-- either within S1 or S2
+
+-- SANITY run { #U = 2 }
+
+ 
+assert EA { some y:U | all x:U | p2[x,y]
+            =>
+	    all  x:U | some y:U | p2[x,y] 
+	  } 
+assert nEA { !(some y:U | all x:U | p2[x,y]
+            =>
+	    all  x:U | some y:U | p2[x,y])
+	  }
+check EA 
+check nEA
+
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --
+
+-- Now to simulate functions in Pred Logic (of arity higher)
+
+
+some sig U {
+  f1 : U,       -- one-ary fn
+  f2 : U -> U,  -- two-ary fn
+}
+
+sig S in U {} 
+
+pred p1[x:U]   { x in S } -- general-enough 1-ary pred
+pred p2[x,y:U] { x in S and y in S } -- general-enough 2-ary pred
+
+ 
+assert EA { some y:U | all x:U | p2[x,f1[y] ]
+            =>
+	    all  x:U | some y:U | p2[x,f1[y] ] 
+	  } 
+assert nEA { !(some y:U | all x:U | p2[x, f2[y,y] ]
+            =>
+	    all  x:U | some y:U | p2[x, f2[y,y]  ] )
+	  }
+check EA 
+check nEA
+
+
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
