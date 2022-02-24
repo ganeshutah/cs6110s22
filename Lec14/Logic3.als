@@ -8,7 +8,7 @@
 
 some sig U {}
 
-sig S extends U {}
+sig S extends U {} -- could also be sig S in U
 
 pred p1[x:U]   { x in S } -- general-enough 1-ary pred
 pred p2[x,y:U] { x in S and y in S } -- general-enough 2-ary pred
