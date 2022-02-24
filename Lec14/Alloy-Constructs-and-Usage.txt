@@ -78,7 +78,6 @@ An SMT-based solver can do this? check!
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --
 
 -- How to introduce FOL zero-ary functions or constants
-
 one sig a,b extends U { } -- constants 'a' in U - guaranteed within U
 
 some sig U {
@@ -95,26 +94,21 @@ pred R0 { some a.r0 } -- Got one Bool Var! True if r0 is suitably assigned!
 pred R1 { some a.r1 } -- Got another Bool var!
 
 assert r0a { R0 => (R1 => R0) } -- Now we can prove Boolean facts!
-
 check r0a
 
 
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --
 
 some sig U {}
-
 sig S1 in U {} 
-
+sig S2 in U {} 
 pred p1[x:U]   { x in S1 }             -- general-enough 1-ary pred
-
 pred p2[x,y:U] { x in S1 and y in S2 } -- general-enough 2-ary pred
 
 -- This is general-enough because
 -- S1, S2 can grow from {} to the full U, and it allows x,y to be
 -- either within S1 or S2
-
 -- SANITY run { #U = 2 }
-
  
 assert EA { some y:U | all x:U | p2[x,y]
             =>
@@ -127,21 +121,18 @@ assert nEA { !(some y:U | all x:U | p2[x,y]
 check EA 
 check nEA
 
+
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --
 
 -- Now to simulate functions in Pred Logic (of arity higher)
-
-
 some sig U {
   f1 : U,       -- one-ary fn
   f2 : U -> U,  -- two-ary fn
 }
-
-sig S in U {} 
-
-pred p1[x:U]   { x in S } -- general-enough 1-ary pred
-pred p2[x,y:U] { x in S and y in S } -- general-enough 2-ary pred
-
+sig S1 in U {}
+sig S2 in U {} 
+pred p1[x:U]   { x in S1 } -- general-enough 1-ary pred
+pred p2[x,y:U] { x in S1 and y in S2 } -- general-enough 2-ary pred
  
 assert EA { some y:U | all x:U | p2[x,f1[y] ]
             =>
