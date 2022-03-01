@@ -8,14 +8,15 @@
 
 some sig U {}
 
-sig S extends U {}
+sig S1 extends U {}
+sig S2 extends U {}
 
-pred p1[x:U]   { x in S } -- general-enough 1-ary pred
-pred p2[x,y:U] { x in S and y in S } -- general-enough 2-ary pred
+pred p1[x:U]   { x in S1 } -- general-enough 1-ary pred
+pred p2[x,y:U] { x in S1 and y in S2 } -- general-enough 2-ary pred
 
 -- run { #U = 2 }
 
- 
+
 assert EA { some y:U | all x:U | p2[x,y]
             =>
 	    all  x:U | some y:U | p2[x,y] 

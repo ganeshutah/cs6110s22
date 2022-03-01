@@ -8,10 +8,10 @@
 
 some sig U {}
 
-sig S extends U {} -- could also be sig S in U
+sig S1, S2 extends U {} -- could also be sig S in U
 
-pred p1[x:U]   { x in S } -- general-enough 1-ary pred
-pred p2[x,y:U] { x in S and y in S } -- general-enough 2-ary pred
+pred p1[x:U]   { x in S1 } -- general-enough 1-ary pred
+pred p2[x,y:U] { x in S1 and y in S2 } -- general-enough 2-ary pred
 
 -- run { #U = 2 }
 
