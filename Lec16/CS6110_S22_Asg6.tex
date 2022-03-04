@@ -1,0 +1,229 @@
+
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+
+\documentclass[11pt]{article}
+
+\usepackage{bera}
+%\renewcommand{\familydefault}{\rmfamily}
+
+\usepackage{graphicx,url}
+\usepackage{proof}
+\usepackage{framed}
+\usepackage{etaremune}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{paralist}
+\thispagestyle{empty}
+
+% 1. To get version suitable for students to populate,
+%    remove the contents of the \ignoreSoln{..body..}
+%
+% 2. To get a version suitable for generating PDF 
+%    without solutions, remove the #1 below
+%
+% 3. To generate solutions, keep the #1 below
+%
+% 4. Assigned grader fills \ignoreSoln{..body..}
+%    and also provides his/her feedback to student
+%    and policy followed for point deduction
+%    So design policy before grading begins.
+
+\newcommand{\ignoreSoln}[1]{#1}   
+%\newcommand{\ignoreModel}[1]{#1} 
+
+
+\newcommand{\bigset}[2]{\big\{\;#1\;:\;#2\;\big\}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Np}{\mathbb{N^{+}}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\DeclareMathSizes{14}{14}{14}{14}
+
+\begin{document}
+
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+
+%\renewcommand{\qedsymbol}{\filledbox}
+\newlength{\minpagw}
+\settowidth{\minpagw}{\hspace{40em}}
+
+\begin{center}
+\begin{large}
+  CS 6110, Spring 2022, Assignment 6  \\
+  Given 3/4/22 -- Due 3/15/22 by 11:59 pm via your Github 
+  \ \\
+%  \ \\  
+    {  {\Large\bf NAME: } \hfill {\Large\bf UNID: }\hspace{4cm} }
+          \ \\
+\end{large}
+
+\end{center}
+
+\noindent{\bf CHANGES:\/} {\bf Please look for lines beginning with underlined words when they are made.}
+         {\tiny none yet.}
+
+         \noindent {\bf Answering, Submission:\/}
+         Have these on your private Github:
+         a folder Asg6/ containing your submission, which in detail comprises:
+         \begin{compactitem}
+         \item A clear README.md describing your files.
+         \item Files that you ran + documentation (can be integrated in one place).
+         \item A high level summary of your cool findings + insights + learning -- briefly reported in
+           a nicely bulletted fashion in your PDF submission.
+         \end{compactitem}
+
+         \noindent {\bf Start Early, Ask Often!}
+Orientation videos and further help will be available (drop a note anytime
+on Piazza for help).
+
+I encourage students constructing answers jointly! {\em But that does not
+mean copy solutions, but discuss the question plus surrounding issues.}
+
+\begin{compactenum}
+
+%- 1 ----------------------------------------------------------------
+\item (40 points)
+  I've checked in Logic[1-5].als. There are two parts to this assignment:
+  \begin{compactenum}
+  \item (20 points)
+    \begin{compactenum}
+    \item (10 points)
+    Go through what I've provided in the above models, and for each
+    file, produce a gist of the encodings I've done and a  two-line
+    comment saying how the encoding works. (Save Logic4.als for the
+    next part.)
+
+    \item (10 points)
+    Get into Logic4.als and make sure that {\tt f2} indeed
+    is encoding a general two-ary function. To ``make sure,'' you must
+    demonstrate a sufficient number of alloy tests/checks/runs and/or
+    model-examination. Have at least 3-4 convincing demos of checks
+    you came up with.
+      
+    \end{compactenum}
+    
+  \item (20 points)
+    \begin{compactenum}
+    \item (10 points) Lecture 16, Slide 4, Image of question 13(b):
+      Encode this assertion similar to the encoding in Logic5.als
+      and check for validity.
+      
+    \item (10 points) Lecture 16, Slide 4, Image of question 13(c):
+      Encode this assertion similar to the encoding in Logic5.als
+      and check for validity.      
+    \end{compactenum}
+  \end{compactenum}
+
+  
+\begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+\end{minipage}
+
+%- 2 ----------------------------------------------------------------
+\item (40 points)
+  \begin{compactenum}
+  \item (20 points)
+    \begin{compactenum}
+    \item (10 points)
+      Go through Mike-Gordon-Slides.pdf and also read Mike Gordon's book,
+      making notes about the proof rules of Hoare Logic presented there.
+      Include assignment, if, for, while, precondition
+      strengthening, and postcondition weakening.
+
+    \item (10 points)
+      Get Dafny and Verifast installed. Please report issues you faced.
+      Say which platform. Put notes in the tools GDoc to help each other.
+    \end{compactenum}
+    
+  \item (20 points)
+    Run the first two Dafny exercises in Lec16.pdf and ask questions
+    on Piazza. All details are given to you.
+  \end{compactenum}
+
+
+  
+\begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+\end{minipage}
+
+%- 3 ----------------------------------------------------------------
+\item (20 points)
+  Write a summary of your project along these lines, occupying two pages.
+  %
+  Push it into your Github which can then be used to drive your project also.
+  %
+  \begin{compactitem}
+  \item A project name (tentative names are OK), a topic,
+    and about 10 lines (12pt font) on why it matters to
+    someone studying SW verification.
+    
+  \item A description of the verification technologies that you'll learn
+    by doing this project. (It could be a topic not yet covered in class
+    such as static analysis.)
+
+  \item A few diagrams and other details you like to add to give me a better
+    idea of the work.
+
+  \item If you'd like to have a project partner, plz note that.
+
+  \item Assuming you have 70\% of the CS 6110 time available for your
+    project, a brief timeline of how you'll deliver your working project
+    by the last day of Spring.
+  \end{compactitem}
+  
+\begin{minipage}{\minpagw}
+  \fbox{%
+    \parbox{\linewidth}{%
+      Your
+
+      Answer
+
+      Here
+    }%
+  }%
+\end{minipage}  
+  
+%- end ----------------------------------------------------------------  
+
+
+\end{compactenum}
+
+\end{document}
+
+
