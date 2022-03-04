@@ -1,31 +1,25 @@
---https://alloy.readthedocs.io/en/latest/language/predicates-and-functions.html
+-- Now try a two-ary predicate, a 1-ary function and a valid sentence --
 
--- p1(x) => q1(y) - validity : univ closure; sat : exist closure
+sig S1, S2 in U {}
 
--- exists x : exists y : p2(x,y) => exists x : p2(x,x) -- check valid/sat
+some sig U {
+  f1 : U -- this is implicitly 'one U' so we get a 1-ary function
+}
 
--- exists y : forall x : p2(x,y) => forall x : exists y: p2(x,y)
-
-some sig U {}
-
-sig S extends U {} -- could also be sig S in U
-
-pred p1[x:U]   { x in S } -- general-enough 1-ary pred
-pred p2[x,y:U] { x in S and y in S } -- general-enough 2-ary pred
-
--- run { #U = 2 }
-
+pred p2[x,y:U] { x in S1 and y in S2 }
  
-assert EA { some y:U | all x:U | p2[x,y]
-            =>
-	    all  x:U | some y:U | p2[x,y] 
-	  } 
-assert nEA { !(some y:U | all x:U | p2[x,y]
-            =>
-	    all  x:U | some y:U | p2[x,y])
+assert EA { ((some y:U | all x:U | p2[x,f1[y] ])
+             =>
+             (all  x:U | some y:U | p2 [x,f1[y] ]))
 	  }
+assert nEA {!((some y:U | all x:U | p2[x,f1[y] ])
+             =>
+             (all  x:U | some y:U | p2 [x,f1[y] ]))
+	  }	  
+
 check EA 
 check nEA
+--
 
  
 

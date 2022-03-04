@@ -1,27 +1,29 @@
-some sig U {
-  f2 : (U some -> one U)  -- two-ary fn
-}
 
-sig S1, S2 in U {} 
+-- This presumably matches the first Huth-Ryan formula I'm giving you to encode in Asg6 --
 
-pred p2[x,y:U] { x in S1 and y in S2 } -- general-enough 2-ary pred
- 
+one sig a extends U { }
+sig S1, S2, S3 in U {}
+some sig U { f : U }
+pred P[x,y,z:U] { x in S1 and y in S2 and z in S3 }
 
-assert EA { ((some y:U | all     x:U | p2[x, f2[y,y] ] )
-            =>
-	        (all      x:U | some y:U | p2[x, f2[y,y] ] ))
-	  }
+assert EA { ( ( (all x:U | P[a,x,x] )
+                and
+	        (all x,y,z:U | P[x,y,z] => P[f[x], y, f[z]])
+	      )
+	      =>
+	      P[f[a],a,f[a]]
+	    )}
 
-
-assert nEA {!( (some y:U | all x:U | p2[x, f2[y,y] ])
-            =>
-	            (all  x:U |    some y:U | p2[x, f2[y,y] ]) )
-	  }
-
+assert nEA {!( ( (all x:U | P[a,x,x] )
+                and
+	        (all x,y,z:U | P[x,y,z] => P[f[x], y, f[z]])
+	      )
+	      =>
+	      P[f[a],a,f[a]]
+	    )}
 check EA 
 check nEA
 
 
- 
 
  
