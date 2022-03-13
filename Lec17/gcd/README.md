@@ -1,3 +1,6 @@
+A nice tutorial is here:
+https://dafny-lang.github.io/dafny/OnlineTutorial/guide
+
 This illustrates that sometimes you have to help Dafny out 
 with "obvious invariants".
 
