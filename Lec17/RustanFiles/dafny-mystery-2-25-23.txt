@@ -1,0 +1,84 @@
+Script started on Thu Feb 25 15:14:46 2021
+[ganesh@dimplemac-2 Dafny]$ dafny/dafny/[K /version
+Dafny 3.0.0.30203
+[?1h=[ganesh@dimplemac-2 Dafny]$ diff dafny1.dfy dafny2.dfy
+20c20
+<     Y := 2 * Y;
+---
+>     Y := Y + Y; // was 2 * Y; 
+[ganesh@dimplemac-2 Dafny]$ more dafny1.dfy
+[?1h=method g20(x : nat, y : nat) returns (S: nat)
+requires x > 0
+requires y > 0
+ensures S == x * y
+{var X, Y;
+ X := x;
+ Y := y;
+ S := 0;
+ while (X != 0)
+ invariant ((x*y - X*Y) == S) 
+ decreases X
+ {
+   while (X%2 == 0)
+   invariant ((x*y - X*Y) == S)
+   invariant X >= 0
+   invariant Y >= 0
+   invariant S >= 0      
+   decreases X
+   {
+    Y := 2 * Y;
+    X := X / 2;
+   }
+   S := S+Y;
+   X := X-1;
+ }
+}
+[7mdafny1.dfy (END)[27m[K[K[K[?1l>[ganesh@dimplemac-2 Dafny]$ more dafny2.dfy
+[?1h=method g20(x : nat, y : nat) returns (S: nat)
+requires x > 0
+requires y > 0
+ensures S == x * y
+{var X, Y;
+ X := x;
+ Y := y;
+ S := 0;
+ while (X != 0)
+ invariant ((x*y - X*Y) == S) 
+ decreases X
+ {
+   while (X%2 == 0)
+   invariant ((x*y - X*Y) == S)
+   invariant X >= 0
+   invariant Y >= 0
+   invariant S >= 0      
+   decreases X
+   {
+    Y := Y + Y; // was 2 * Y; 
+    X := X / 2;
+   }
+   S := S+Y;
+   X := X-1;
+ }
+}
+[7mdafny2.dfy (END)[27m[K[K[K[?1l>[ganesh@dimplemac-2 Dafny]$ dafny/dafny dafny1.dfy
+[?1h=[39;49m[91m[39;49m/Users/ganesh/repos/software_correctness/Dafny/dafny1.dfy(13,3): Error: decreases expression might not decrease
+Execution trace:
+    (0,0): anon0
+    /Users/ganesh/repos/software_correctness/Dafny/dafny1.dfy(9,2): anon12_LoopHead
+    (0,0): anon12_LoopBody
+    /Users/ganesh/repos/software_correctness/Dafny/dafny1.dfy(9,2): anon13_Else
+    /Users/ganesh/repos/software_correctness/Dafny/dafny1.dfy(9,2): anon14_Else
+    /Users/ganesh/repos/software_correctness/Dafny/dafny1.dfy(13,4): anon15_LoopHead
+    (0,0): anon15_LoopBody
+    /Users/ganesh/repos/software_correctness/Dafny/dafny1.dfy(13,4): anon16_Else
+    /Users/ganesh/repos/software_correctness/Dafny/dafny1.dfy(13,4): anon17_Else
+
+Dafny program verifier finished with 0 verified, 1 error
+[ganesh@dimplemac-2 Dafny]$ dafny/dafny dafny2.dfy
+[?1h=
+Dafny program verifier finished with 1 verified, 0 errors
+Compiled assembly into dafny2.dll
+[ganesh@dimplemac-2 Dafny]$ exit
+exit
+
+Script done on Thu Feb 25 15:16:03 2021
