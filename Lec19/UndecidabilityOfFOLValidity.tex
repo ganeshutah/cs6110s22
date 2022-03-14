@@ -1,0 +1,311 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+
+\documentclass[11pt]{article}
+
+
+\usepackage{graphicx,url}
+\usepackage{proof}
+\usepackage{framed}
+\usepackage{etaremune}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{paralist}
+
+\usepackage[most]{tcolorbox}
+
+\definecolor{bg}{rgb}{0.9,0.9,0.9}%-- try others later
+\definecolor{lightgray}{rgb}{0.95,0.95,0.95}%-- try others later
+\definecolor{block-gray}{gray}{0.9}%-- try others later
+\definecolor{dark-gray}{gray}{0.86} %-- try others later
+\definecolor{light-gray}{gray}{0.96} %-- try others later
+\newtcolorbox{myquote}{colback=block-gray,breakable,boxrule=0pt}
+\newtcolorbox{mydarkquote}{colback=dark-gray,breakable,boxrule=0pt}
+\newtcolorbox{mylightquote}{colback=light-gray,breakable,boxrule=0pt}
+
+
+% 1. To get version suitable for students to populate,
+%    remove the contents of the \ignoreSoln{..body..}
+%
+% 2. To get a version suitable for generating PDF 
+%    without solutions, remove the #1 below
+%
+% 3. To generate solutions, keep the #1 below
+%
+% 4. Assigned grader fills \ignoreSoln{..body..}
+%    and also provides his/her feedback to student
+%    and policy followed for point deduction
+%    So design policy before grading begins.
+
+\newcommand{\ignoreSoln}[1]{#1}   
+%\newcommand{\ignoreModel}[1]{#1} 
+
+
+\newcommand{\bigset}[2]{\big\{\;#1\;:\;#2\;\big\}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Np}{\mathbb{N^{+}}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\DeclareMathSizes{14}{14}{14}{14}
+
+\begin{document}
+
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+
+%\renewcommand{\qedsymbol}{\filledbox}
+
+
+\begin{center}
+\begin{Large}
+\sf Undecidability of the Validity FOL -- presented as steps we one can check off
+\end{Large}
+\end{center}
+
+\begin{Large}
+
+\noindent These are meant as steps you can check off pertaining to the proof of validity of FOL. Each step
+later will refer to a previous step, so you can monitor where you don't follow something.
+%
+Check each box as you read through.
+
+
+
+\begin{enumerate}
+\item \verb|[ ]| \label{step1}
+  A PCP instance $S = \{(\alpha_1, \beta_1), (\alpha_2, \beta_2), \ldots, (\alpha_n, \beta_n) \}$ is given.
+  An example from Figure 15.1 of ``Book 1,'' is
+  $\{(01,1), (011,1), (01,0), (1,101)\}$. \\
+  This can be interpreted as detailed below:
+  \begin{itemize}
+  \item[]
+    $\{(\alpha_1 = 01, \beta_1 = 1),$
+  \item[] $ (\alpha_2 = 011, \beta_ 2 = 1),$
+   \item[] $ (\alpha_3 = 01,  \beta_3 = 0),$
+   \item[]  $ (\alpha_4 = 1,   \beta_4 = 101)\}$.
+  \end{itemize}
+  
+\item \verb|[ ]| A solution for a PCP instance S is a sequence
+  ${i1}, {i2}, \ldots, {in}$ such that \\
+  $\alpha_{i1} \alpha_{i2} \ldots \alpha_{in} =
+   \beta_{i1} \beta_{i2} \ldots \beta_{in}$. \\
+  Continuing the example from the book, we have ``$4,3,1,4,2$'' as the
+  solution sequence, as shown by \\
+  $\alpha_{4} \;  \alpha_{3}  \; \alpha_{1} \; \alpha_{4} \; \alpha_{2} =
+  \beta_{4} \; \beta_{3}  \; \beta_{1} \; \beta_{4} \; \beta_{2}$, which
+  can be read as  \\
+  $1\; 01\; 0    1 \; 1\; 01   1 =
+   1   01\; 0 \; 1\;  1   01\; 1$.  
+
+ \item Given a PCP instance $S$ as in Step~\ref{step1}, we generate a
+   formula $W_S$ of the form
+     \( (A_1 \wedge A_2) \Rightarrow C \)
+
+   where
+
+   \begin{itemize}
+   \item[] $A_1 = 
+\textstyle \wedge_{i=1}^{n} \; p(f_{\alpha_i}(a), f_{\beta_i}(a)) \;\;\;\;\;\;\;\;  $ 
+\item[] $A_2 = 
+\textstyle \forall x\; \forall y\;
+  [p(x,y) \Rightarrow \wedge_{i=1}^{n} \; p(f_{\alpha_i}(x), f_{\beta_i}(y))] \;\;\;\;\;\;\;\; $ 
+\item[] $C = 
+\textstyle \exists z\; p(z,z) \;\;\;\;\;\;\;\; $ 
+   \end{itemize}
+
+
+
+ \item \verb|[ ]| First, we will try to prove this -- call it {\bf Case-1}:\\
+   {\bf $W_S$ is valid implies S has a solution.}
+
+ \item \verb|[ ]| Next, we will try to prove this -- call it {\bf Case-2}:\\
+   {\bf S has a solution implies $W_S$ is valid.}
+
+ \item \verb|[ ]| For {\bf Case-1}, assume $W_S$ is valid. That
+   means we can pick any interpretation we like (to achieve our goal,
+   which is $S$ has a solution). So pick the following interpretation.
+
+\begin{list}{$\bullet$}{\addtolength{\itemsep}{-1.6\itemsep}}
+\item[] $\displaystyle a = \varepsilon$
+\item[] $\displaystyle f_0(x) = x0$ (string `$x$' and string `$0$' concatenated)
+\item[] $\displaystyle f_1(x) = x1$ (similar to the above)
+\item[] $\displaystyle p(x,y)$ = There exists a non-empty
+                                sequence $i_1 i_2 \ldots i_m$ such that
+\item[] $\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;  x = \alpha_{i_1}\alpha_{i_2}\ldots\alpha_{i_m}$ and
+                                $y = \beta_{i_1}\beta_{i_2}\ldots\beta_{i_m}$ 
+\end{list}
+%--
+   
+
+\item \verb|[ ]| Under this interpretation, we can see that each
+  conjunct of $A_1$ is true. So $A_1$ as a whole is true. This is
+  because $p$ says that ``it must see one block being
+  fed to it.''
+
+\item \verb|[ ]| Under this interpretation, we can see that inside
+  the $\forall$, if we keep $x$ and $y$ general, then
+  we have to decide if the following is true:
+  \begin{itemize}
+    \item $[p(x,y) \Rightarrow \wedge_{i=1}^{n} \; p(f_{\alpha_i}(x), f_{\beta_i}(y))] $
+  \end{itemize}
+  But first let's stare at this, for some $i$:
+  \begin{itemize}
+  \item $[p(x,y) \Rightarrow  \; p(f_{\alpha_i}(x), f_{\beta_i}(y))] $
+  \end{itemize}
+
+\item \verb|[ ]|
+  Now,   $[p(x,y) \Rightarrow  \; p(f_{\alpha_i}(x), f_{\beta_i}(y))] $ is true for some $i$. This is because ``p says'' the following: if $x,y$
+  are as per a consistent $\alpha$ and $\beta$ concatenation,
+  we can extend it by one more $\alpha$ or $\beta$ concatenation.
+  That is, we are making a longer listing similar to \\
+  $\alpha_{4} \;  \alpha_{3}  \; \alpha_{1} \; \alpha_{4} \; \alpha_{2}$\\
+  and\\
+  $\beta_{4} \; \beta_{3}  \; \beta_{1} \; \beta_{4} \; \beta_{2}$.
+
+
+\item \verb|[ ]|
+  Thus, $A_2$ as a whole is true, where $A_2$ is as follows:\\
+$\textstyle \forall x\; \forall y\;
+  [p(x,y) \Rightarrow \wedge_{i=1}^{n} \; p(f_{\alpha_i}(x), f_{\beta_i}(y))] \;\;\;\;\;\;\;\; $ 
+  
+
+\item \verb|[ ]| So we know that  $A_1$ and $A_2$ are true. Also
+  we know that $(A_1\wedge A_2\Rightarrow C)$ is true because
+  we are working under {\bf Case-1} which assumes $W_S$ is valid.
+
+
+\item \verb|[ ]| Thus $C$ must be true!
+
+\item \verb|[ ]| This means that the PCP system $S$ has a solution! That is
+  what $C$ says!  {\bf So, Case-1 is proven!}
+
+\item \verb|[ ]|
+  Next, we will try to prove  {\bf Case-2}:\\
+   {\bf S has a solution implies $W_S$ is valid.}
+
+\item \verb|[ ]|   
+  Since $S$ has a solution, there is a sequence
+  ${i1}, {i2}, \ldots, {in}$ such that \\
+  $\alpha_{i1} \alpha_{i2} \ldots \alpha_{in} =
+   \beta_{i1} \beta_{i2} \ldots \beta_{in}$.
+
+
+ \item \verb|[ ]| We must show $W_S$ is valid -- true under
+   all interpretations!
+
+ \item \verb|[ ]|   
+   So we can't assume any particular meaning
+   for $p$, $f_0$, and $f_1$. Remember that things like 
+   $f_{\alpha_i}$, $f_{1011}$, etc are abbreviations. We really
+   only have $f_0$ and $f_1$ as our function symbols.
+
+ \item \verb|[ ]|   But $W_S$ is of the form
+   $(A_1 \wedge A_2 \Rightarrow C)$ and we are asked to show
+   it is valid!
+
+ \item \verb|[ ]| It is silly to consider the case
+   of $A_1$ or $A_2$ being false -- because then $W_S$ would
+   be true. Thus we can assume that $A_1$ and $A_2$ are true,
+   and show that $C$ is true -- under all interpretations!
+
+\item    Then we would have shown that
+   $(A_1 \wedge A_2 \Rightarrow C)$ is valid.
+
+\item \verb|[ ]| But we know that $S$ has a solution. So we exploit that.
+
+\item \verb|[ ]|  
+  Consider
+  $A_1$. {\bf We are  assuming $A_1$ is true, and so we exploit that fact.}
+  We can take $A_1$ and see that it asserts something
+     rather simple. It asserts $n$ facts of this form:
+   $ 
+\textstyle \wedge_{i=1}^{n} \; p(f_{\alpha_i}(a), f_{\beta_i}(a)) \;\;\;\;\;\;\;\;  $      
+
+\item \verb|[ ]| \label{step-x}
+  Take {\bf one of these facts asserted by $A_1$.}
+  And in fact,
+  choose the {\em particular fact} following the solution $S$: \\
+   $ 
+\textstyle \; p(f_{\alpha_{i_1}}(a), f_{\beta_{i_1}}(a)) \;\;\;\;\;\;\;\;  $      
+  
+
+ \item \verb|[ ]| Fine. Have a coffee or beer before you continue!
+
+ \item \verb|[ ]| Now, {\bf we are assuming that $A_2$ is true.}
+   
+ \item \verb|[ ]| We can interpret $A_2$ as a ``bag of inference
+   rules.''
+   
+ \item \verb|[ ]| \label{step-y}
+   $A_2 =$
+$\textstyle 
+   [p(x,y) \Rightarrow \wedge_{i=1}^{n} \; p(f_{\alpha_i}(x), f_{\beta_i}(y))] \;\;\;\;\;\;\;\; $
+
+ \item \verb|[ ]|      Notice that in the above step,
+   we can infer one big conjunct. We choose to infer one
+   of those conjuncts only!
+   
+   
+\item \verb|[ ]| Thus, we can ``pattern match'' the fact in
+  Step~\ref{step-x} with the rule in   Step~\ref{step-y}
+  and infer, using modus ponens, the following:
+
+  \[ p(f_{\alpha_{i_2}} ( f_{\alpha_{i_1}} ( a)),
+       f_{\beta_{i_2}} ( f_{\beta_{i_1}} ( a)) ) \]
+  
+  
+  
+     \item \verb|[ ]| Wow, this game is fun and we can keep inferring
+       bigger and bigger things! We infer next, the following:
+
+
+       \[ p(f_{\alpha_{i_3}} ( f_{\alpha_{i_2}} ( f_{\alpha_{i_1}} ( a))),
+          p(f_{\beta_{i_3}} ( f_{\beta_{i_2}} ( f_{\beta_{i_1}} ( a)))) \]
+       
+        \item \verb|[ ]| Till finally we infer this:
+\[ p(f_{\alpha_{i_1}\alpha_{i_2} \ldots\alpha_{i_m}}(a),
+     f_{\beta_{i_1}\beta_{i_2} \ldots\beta_{i_m}}(a)). \]          
+
+   \item \verb|[ ]|
+     But we now know that
+     \[ \alpha_{i_1}\alpha_{i_2}\ldots\alpha_{i_m} = \beta_{i_1}\beta_{i_2}\ldots\beta_{i_m} = Soln, \] because ``$S$ has a solution'' -- call it $Soln$.
+
+   \item Thus  we inferred
+     \( p(f_{Soln}(a), f_{Soln}(a)) \).
+
+   \item \verb|[ ]|
+     This means that we inferred $C$ is true !!
+
+
+   \item \verb|[ ]|
+     Thus, without assuming any interpretation at all,
+     assuming $A_1$ and $A_2$, we showed that $C$ is true.
+
+   \item \verb|[ ]|   Thus we showed that $W_S$ is valid. This
+     finishes {\bf Case-2}.
+  
+\end{enumerate}
+
+\end{Large}
+
+\end{document}
+%==
+
