@@ -1,0 +1,70 @@
+function recsum(a: array?<int>,Max:nat) : int // sum [0..Max)
+reads a
+requires a != null
+requires 0 <= Max <= a.Length
+decreases Max
+{ if a.Length == 0 then 0
+  else if 0 == Max then 0
+  else a[Max-1]+recsum(a,Max-1) }
+---
+method sumarr(a: array?<int>) returns (sum:int)
+ requires a != null
+ ensures sum == recsum(a,a.Length) //sum [0..a.Length)
+ {sum := 0;
+  if (a.Length==0) {return;}
+  var i : int := 0;
+
+  while (i < a.Length)
+  invariant 0 <= i <= a.Length // LI2
+  invariant sum == recsum(a,i) // LI1
+  {
+   //at Q
+   sum := sum + a[i];
+   //at P
+   i:=i+1;
+  }
+}
+
+
+--------------------------------
+Preserved around the loop?
+--------------------------------
+Path back from LI1, at P : LI [i+1]/i
+path back ......... at Q : LI [i+1]/i [sum+a[i]/sum]
+i.e.                     : sum+a[i] == recsum(a,i+1)
+path back via while cond : i < a.Length ==> LI [i+1]/i [sum+a[i]/sum]
+i.e.                     : i < a.Length ==> (sum+a[i] == recsum(a,i+1))
+
+
+Now is LI1 contained in it?
+
+i.e.   (sum == recsum(a,i)) && (i < a.Length) =?=>  (sum+a[i] =?= recsum(a,i+1))
+
+i.e.   (sum == recsum(a,i)) && (i < a.Length) =?=>  (recsum(a,i) + a[i] =?= recsum(a,i+1)) <-- yes (defn)
+
+--------------------------------
+Now is output assertion true in exit path?
+--------------------------------
+(sum == recsum(a,i)) && (i == a.Length) =?=>  ( sum == recsum(a,a.Length) )
+i.e.
+(sum == recsum(a,a.Length)) && (i == a.Length) =?=>  ( sum == recsum(a,a.Length) ) <-- yes (P=>P)
+
+--------------------------------
+Now does the input maintain LI?
+--------------------------------
+
+sum == 0 && i == 0 =?=> LI1
+
+i.e.
+sum == 0 && i == 0 =?=> (sum =?= recsum(a,i))
+
+i.e.
+sum == 0 && i == 0 =?=> (0 =?= recsum(a,i))
+
+i.e.
+sum == 0 && i == 0 =?=> (0 =?= recsum(a,0)) <-- yes by defn of recsum
+--------------------------------
+
+
+
+
