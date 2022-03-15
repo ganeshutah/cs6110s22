@@ -20,6 +20,7 @@ method ComputeFib(n: nat) returns (a: nat)
    var b := 1;
    var i := 0;
    while i < n
+   decreases n-i
    { a, b := b, a + b;
      i := i + 1;      }
 }
