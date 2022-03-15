@@ -1,0 +1,3 @@
+Your problem uses non-linear arithmetic, which can be a sore spot for the verifier. When dealing with non-linear arithmetic, it is usual that the verifier doesn’t do everything automatically and you instead have to supply some of the proofs yourself.
+
+For your particular example, I, too, am surprised. I don’t have any explanation that I can offer, other than to say again that the verifier is weak when it comes to non-linear arithmetic. I tried some variations of your program and found that dafny3.dfy (enclosed) happens to work with both Y+Y and 2*Y. But why it works with both variations and your programs don’t, I can’t tell.
