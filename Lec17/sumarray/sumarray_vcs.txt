@@ -45,9 +45,17 @@ i.e.   (sum == recsum(a,i)) && (i < a.Length) =?=>  (recsum(a,i) + a[i] =?= recs
 --------------------------------
 Now is output assertion true in exit path?
 --------------------------------
-(sum == recsum(a,i)) && (i == a.Length) =?=>  ( sum == recsum(a,a.Length) )
-i.e.
-(sum == recsum(a,a.Length)) && (i == a.Length) =?=>  ( sum == recsum(a,a.Length) ) <-- yes (P=>P)
+(sum == recsum(a,i)) && (i >= a.Length) =?=>  ( sum == recsum(a,a.Length) )
+                           ^
+                           |-- I WROTE THIS AS == BY MISTAKE BEFORE :-)
+
+because the negation of (i < a.Length) is i >= a.Length :-)
+
+I.E. [WHOOPS no, can't substitute for "i" like I did before]
+
+(sum == recsum(a,a.Length)) && (i >= a.Length) =?=>  ( sum == recsum(a,a.Length) ) <-- WHOOPS NO! can't substitute this way
+
+SO MUST STRENGTHEN THE LI!
 
 --------------------------------
 Now does the input maintain LI?
