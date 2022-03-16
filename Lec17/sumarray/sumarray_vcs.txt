@@ -59,9 +59,12 @@ so [WHOOPS no, can't substitute for "i" like I did before]
 
 SO MUST STRENGTHEN THE LI!
 
-Now I get it, I must add i <= a.Length :-)
+Now I get it, I must add i <= a.Length :-) which is LI2
+
 then we get
- i <= a.Length && i >= a.Length i.e. i == a.Length and all is well :-)
+ 0<= i <= a.Length (which is LI2)
+ && i >= a.Length  (exit condition)
+ i.e. i == a.Length and all is well :-)
 
 --------------------------------
 Now does the input maintain LI?
