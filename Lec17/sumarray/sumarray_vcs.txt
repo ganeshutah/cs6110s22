@@ -49,13 +49,19 @@ Now is output assertion true in exit path?
                            ^
                            |-- I WROTE THIS AS == BY MISTAKE BEFORE :-)
 
-because the negation of (i < a.Length) is i >= a.Length :-)
+because the negation of (i < a.Length)
+ is i >= a.Length not i == a.Length :-)
 
-I.E. [WHOOPS no, can't substitute for "i" like I did before]
+so [WHOOPS no, can't substitute for "i" like I did before]
+
 
 (sum == recsum(a,a.Length)) && (i >= a.Length) =?=>  ( sum == recsum(a,a.Length) ) <-- WHOOPS NO! can't substitute this way
 
 SO MUST STRENGTHEN THE LI!
+
+Now I get it, I must add i <= a.Length :-)
+then we get
+ i <= a.Length && i >= a.Length i.e. i == a.Length and all is well :-)
 
 --------------------------------
 Now does the input maintain LI?
