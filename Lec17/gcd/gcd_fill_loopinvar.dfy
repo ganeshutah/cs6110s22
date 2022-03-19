@@ -14,14 +14,14 @@ requires y>0
 ensures  G==gcd(x,y)
 ensures  G!=0
 {var X,Y := x,y; // info from the " requires " doesn't flow 
- assert X > 0;               //-- this also helps out **
+ //assert X > 0;               //-- this also helps out **
  //-passes assert (X!=0);
  //-passes assert (Y!=0);
  //assert (X > 0) && (Y > 0); -- this assertion also helps **
- while (X!=Y) // && X>0 && Y>0 //-- why is this part needed?
+ while (X!=Y) //&& X>0 && Y>0 //-- why is this part needed?
   decreases X+Y
   invariant gcd(X,Y)==gcd(x,y)
-  //invariant X > 0           -- or this invariant helps **
+  //invariant X > 0           //-- or this invariant helps **
   //- ADD invariant X > 0 to:
   //- (1) pass verification
   //- (2) remove the red underlines

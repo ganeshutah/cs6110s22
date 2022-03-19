@@ -3,9 +3,11 @@ requires x >= 0
 { if (n==0) then 1 else x * expn(x, n-1) }
 method expsqr(x:nat, n:nat) returns (P:nat)
 requires x > 0
+requires n > 0
 ensures P == expn(x,n)
-{var X, N := x, n;
- if (n < 0) { X := 1 / X; N := -N; }
+{
+   //var X, N := x, n;
+//if (n < 0) { X := 1 / X; N := -N; }
  P := 1;
  if (N == 0) { return; }
  var Y := 1; 

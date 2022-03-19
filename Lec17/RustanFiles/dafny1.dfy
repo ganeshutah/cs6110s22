@@ -17,7 +17,7 @@ ensures S == x * y
    invariant S >= 0      
    decreases X
    {
-    Y := 2 * Y;
+    Y :=  2 * Y;
     X := X / 2;
    }
    S := S+Y;

@@ -9,6 +9,7 @@ ensures P == power(x,n)
  while (N != 0)
  decreases N
  // invariant <fill>
+ invariant P * power(X, N) == power(x,n)
   {
    N := N - 1;
    P := P * X;
