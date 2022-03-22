@@ -1,0 +1,8 @@
+# Generate a checker
+rumur my-model.m --output my-model.c
+
+# Compile the checker (also pass -mcx16 if using GCC on x86-64)
+cc -march=native -std=c11 -O3 my-model.c -lpthread
+
+# Run the checker
+./a.out

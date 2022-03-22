@@ -1,0 +1,57 @@
+	deadlock
+
+Startstate "init", d: DATA_0 fired.
+Cache[NODE_0].State:I
+Cache[NODE_0].Data:Undefined
+Cache[NODE_1].State:I
+Cache[NODE_1].Data:Undefined
+Chan1[NODE_0].Data:Undefined
+Chan1[NODE_0].Cmd:Empty
+Chan1[NODE_1].Data:Undefined
+Chan1[NODE_1].Cmd:Empty
+Chan2[NODE_0].Data:Undefined
+Chan2[NODE_0].Cmd:Empty
+Chan2[NODE_1].Data:Undefined
+Chan2[NODE_1].Cmd:Empty
+Chan3[NODE_0].Data:Undefined
+Chan3[NODE_0].Cmd:Empty
+Chan3[NODE_1].Data:Undefined
+Chan3[NODE_1].Cmd:Empty
+InvSet[NODE_0]:false
+InvSet[NODE_1]:false
+ShrSet[NODE_0]:false
+ShrSet[NODE_1]:false
+ExGntd:false
+CurCmd:Empty
+CurPtr:Undefined
+MemData:DATA_0
+AuxData:DATA_0
+----------
+
+Rule "SendReqE", i: NODE_1 fired.
+Chan1[NODE_1].Cmd:ReqE
+MemData:DATA_0
+AuxData:DATA_0
+----------
+
+Rule "SendReqE", i: NODE_0 fired.
+Chan1[NODE_0].Cmd:ReqE
+MemData:DATA_0
+AuxData:DATA_0
+----------
+
+End of the error trace.
+
+
+==========================================================================
+
+Status:
+
+	1 error(s) found.
+
+State Space Explored:
+
+	12 states, 17 rules fired in 0s.
+ganesh@nimbus:~/rumur$ pwd
+/home/ganesh/rumur
+ganesh@nimbus:~/rumur$ 
