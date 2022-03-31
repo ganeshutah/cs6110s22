@@ -1,0 +1,273 @@
+-----------------------------------------------------------------
+0. This is not related to the quiz but will come up during Lec17
+
+Are fac(4) and fac1(4) equivalent under Python's execution order? Explain!
+(Answer at the end of this file.)
+
+def fac (x):
+    return 1 if (x<=0) else x * fac(x-1)
+
+def fac1(x):
+    return IfThenElse( (x<=0), 1, x * fac1(x-1) )
+
+def IfThenElse(p, thenPart, elsePart):
+    return thenPart if p else elsePart
+
+
+-----------------------------------------------------------------
+1. Derivation of function substitution of function "f1"
+
+** Your quiz will be to derive the function substitution for "f2"
+ in the same manner, where f2 = lambda x,y: (x >= y) -> x+1, y-1)
+
+F(x,y) = (x=y) -> y+1, F(x, F(x-1, y+1)) (*)
+
+f1 = lambda x,y: (x=y) -> y+1,    x+1
+
+
+Show that f1 solves (*)
+
+After substitution on both sides, we have
+
+(x=y) -> y+1, x+1 =?= (x=y) -> y+1, F(x, F(x-1, y+1)) [f1/F]
+
+1: Case (x=y):
+
+     We have y+1 =?= y+1 which passes.
+
+2: Case (x != y):
+
+2.1: Case (x < y):
+
+    x+1 =?= F(x, F(x-1, y+1)) [f1/F]
+
+    RHS: F(x, F(x-1, y+1)) [f1/F]
+
+    = F(x, (x-1) = (y+1) -> (y+1+)+1 , (x-1)+1 )
+
+    Focusing on Arg2:
+
+    	     (x < y) means (x-1) != (y+1)
+
+	     Thus Arg2 becomes (x-1)+1 = x
+
+    RHS becomes F(x, x) which is x+1
+
+    Hence x+1 =?= x+1 passes
+
+2.2: Case x > y:
+
+    2.2.1: Case x > y+2:
+
+        Then focusing on Arg2,
+
+	    F(x-1, y+1) [f1/F] becomes
+
+	    (x-1) = (y+1) -> (y+1)+1 , (x-1)+1
+
+	    But given x > y+2, (x-1) != (y+1), thus Arg2 becomes x
+
+	    Hence RHS becomes F(x, x) which is x+1
+
+    Case 2.2.2: x <= y+1:
+
+        Then focusing on Arg2,
+
+	    F(x-1, y+1) [f1/F] becomes
+
+	    (x-1) = (y+1) -> (y+1)+1 , (x-1)+1
+
+	    But given x > y+2, (x-1) != (y+1), thus Arg2 becomes x
+
+	    Hence RHS becomes F(x, x) which is x+1
+
+    Case 2.2.3: x == y+2:
+
+        Then focusing on Arg2,
+
+	    F(x-1, y+1) [f1/F] becomes
+
+	    (x-1) = (y+1) -> (y+1)+1 , (x-1)+1
+
+	    But given x = y+2, (x-1) == (y+1),
+	    
+	    	thus Arg2 becomes (y+1)+1 i.e. y+2 i.e. x (again)
+
+	    Hence RHS becomes F(x, x) which is x+1
+
+
+-----------------------------------------------------------------
+2. Derivation of Ye being the (eager) fixpoint combinator
+
+Observe that function applications left-associate; i.e.
+(f g x ) = ((f g) x)
+
+Given this, here are our favorite fp combinators:
+
+Y  = \f. [\x . f(xx)]  [\x . f(xx)]
+
+Ye = \f. [\x. x x] [\y. f (\v. (y y v))]
+
+--
+
+** Showing Yg = g(Yg) will be left for you to do as a part of
+your homework.
+
+** You'll also be showing that it is not suitable
+for applicative order.
+
+** You'll also be showing that (Y H 2) gives you 2! similar to
+the derivation below.
+   
+--
+
+On the other hand, let us show that Ye g = g(Ye g)
+and that this is suitable for applicative-order evaluation.
+
+Ye = \f. [\x. x x] [\y. f (\v. (y y v))]
+
+Ye g = [\x. x x] [\y. g (\v. (y y v))]
+
+     = [\y. g (\v. (y y v))] [\y. g (\v. (y y v))]
+
+     = g (\v. (y y v))  [ [\y. g (\v. (y y v))] / y ]
+
+     ~~ for proof, we use eta ~~
+
+     = g (y y)  [ [\y. g (\v. (y y v))] / y ] 
+
+     = g ( [\y. g (\v. (y y v))] [\y. g (\v. (y y v))] )
+
+     = g ( Ye g)
+
+     ~~ for eval, we go differently ~~
+
+     = g (\v. ([\y. g (\v. (y y v))] [\y. g (\v. (y y v))] v))
+
+     = Here, the
+       (\v. ([\y. g (\v. (y y v))] [\y. g (\v. (y y v))] v))
+       remains as a function, and does not "runaway" ,
+       thus
+       making "g" the redex when an argument is supplied
+       such as the functional that defines recursion (the
+       "Pre" function)
+--
+
+In detail, suppose we want to evaluate "factorial" (fac)
+using Ye. Here is how (fac 2) will proceed.
+
+fac x = (x <= 0) -> 1 , x * fac (x-1)
+
+fac = least fixpoint of
+      H = \G. [\x. (x<=0) -> 1, x*G(x-1) ]
+
+    = Ye H 
+
+Thus fac 2
+    = Ye H 2
+    
+    = H (\v. ([\y. H (\v. (y y v))] [\y. H (\v. (y y v))] v)) 2
+    
+    = (\G. [\x. (x<=0) -> 1, x*G(x-1) ])
+      (\v. ([\y. H (\v. (y y v))] [\y. H (\v. (y y v))] v))
+      2
+
+    = [\x. (x<=0) -> 1, x*G(x-1)]
+         [ (\v. ([\y. H (\v. (y y v))] [\y. H (\v. (y y v))] v))
+	   / G ] 2
+
+= (2<=0) -> 1,
+ 2*G(2-1) [ (\v. ([\y. H (\v. (y y v))] [\y. H (\v. (y y v))] v))
+	   / G ]
+
+ = 2 * [(\v. ([\y. H (\v. (y y v))] [\y. H (\v. (y y v))] v)) 1 ]
+
+ = 2 * 1 *
+   [(\v. ([\y. H (\v. (y y v))] [\y. H (\v. (y y v))] v)) 0 ]
+
+ = 2 * 1 * 1
+
+
+-----------------------------------------------------------------
+3. The parallel composition of resistors is monotonic with respect
+   to the precision ordering.
+
+   Consider a resistor of R1 Ohms and another of R2 Ohms where
+   Ohmic values are in positive Reals (0, \infinity).
+
+   Let the tolerance of a resistor be a percentage value "p" - e.g. 5
+
+   Thus R1@p means the real value of R1
+   is
+   either R1+p*R1/100, 
+   or     R1-p*R1/100
+
+   We are to argue that parcomp is monotonic wrt the tolerance
+   partial order, where R@q [= R@p if p < q i.e. the tolerance of p
+   is smaller than that of R.
+   
+   Defining parcomp = \R1 . \R2 . R1*R2/(R1+R2)
+
+   Let us show that parcomp is monotonic in the first argument
+   (it will be monotonic in the second argument, by symmetry).
+
+   Here is by way of example:
+
+   parcomp 100@10 100@5 [=  parcomp 100@5 100@5
+
+   because R1R2/(R1+R2) has less of an "interval spread" if
+   R1 is at 5 percent tolerance compared to R1 being at
+   10 pecent tolerance.
+
+   For definiteness, define the interval of R@p, i.e. I(R@p) as follows:
+
+   * I(R@p) = [R - p*R/100,  R + p*R/100]
+
+   * I(R@q) = [R - q*R/100,  R + q*R/100]
+
+   * R@q [= R@p if and only if I(R@p) is contained in I(R@q)
+
+   * This is true because the central value is R, and the
+     spread is defined by p or q.
+
+   ** Example (this is what you have to answer in your quiz)
+   **  R = 100 and p is 10, and q is 5.
+   **  Show that I(100@5) is contained in I(100@10).
+
+   Thus, when we focus on the first argument of parcomp (keeping
+   the second fixed) or the second argument (keeping the first fixed),
+   we have a lattice ordering that respects INTERVAL REFINEMENT.
+
+   A resistor with higher interval spread is below the one with
+   lower interval spread, in the lattice ordering.
+
+   The "bottom" of the lattice is a resistor whose Ohmic value
+   is (-infinity, +infinity)
+
+   The "top" of the chain, for each resistor of value R, is R@0.
+
+---
+
+  * Parcomp = \R1 . \R2 . R1*R2/(R1+R2)
+
+  * Is this true that Parcomp (100@10, r) [=  parcomp (100@5, r)
+    for r being any interval of the form "R@p"
+
+  * Is this true that parcomp (r, 100@10) [=  parcomp (r, 100@5)
+    for r being any interval of the form "R@p"    
+
+---
+
+0. Answer -- If IfThenElse has to be viewed as a function,
+   	     it must be strict only in the first argument
+	     (i.e., the predicate argument). That is not how
+	     Python views things by default (it has to evaluate
+	     all its arguments). Hence fac1(4) will loop infinitely,
+	     eventually exceeding the allowed recursion depth.
+
+---
+
+
+  (Y H 2) -> H (Y H) 2 -> H (H (Y H)) 2 -> ... 
+   
+---

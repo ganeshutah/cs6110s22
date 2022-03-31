@@ -1,0 +1,48 @@
+=======================================================
+FIXPOINT THEORY IN CFG
+=======================================================
+SPA notes summary
+
+Caveats: ideas in PL lattice theory and SA lattice theory are related but SA goes T to B, not the other way. B in FP theory is nontermination.
+
+Ch4: Lattice Theory
+Sign Analysis
+{+, -, 0, T, B}
+T is least precise
+Undecidable in general
+Lattice defn
+x <= y means y is a safe approx, and x is at least as precise as y
+Join of X is something that weakens the info (denoted y)
+4.3: Lattices under set inclusion. Join is union.
+Hasse diagrams.
+Product lattice. Component-wise ascent.
+4.4 System of equations.
+Dataflow equations.
+Unification not ideal - circular - fp theory
+Monotone : x <= y  => f(x) <= f(y). Preserve approx order.
+Resistor parallel composition is monotone. Gold (tolerance band) <= Silver
+System of equations x_i = F(x_i) and when solvable?
+Same idea in CTL, in CFG, in ckt simulation, ...
+LFP is lub_i >= 0 f^i(B), and discussions in Func Prog (page 47 of SPA)
+
+Ch5: DFA with monotone frameworks
+Join(v) = lub_w\in pred(v) [ w ]
+Join is a var-sign-state-combiner, returing a sign state
+- v is a DFA node; E.g. join([a=c+2]) = [c=b] join [c=-5]
+DFA node at the output of X:=E; is 'v'
+[[v]] = join(v) [X -> eval(join(v), E)]...
+- need to update sign of X. How?
+  - need to eval sign of E and that falls into cases
+  - recursively eval E but chase down 
+- abseval of E relative to an abstract state sigma
+- eval(sigma,X) = lookup X; eval(sigma,I) = sign(I)...
+A pgm with N var nodes looks like a system of N equations
+Join receives the full sign-state and takes lubs of the function ranges
+Page 55: A's sign-state is updated, B's is updated; then input
+makes v's sign T. This means  in TIP there is a truth-status to input
+Then we get abstract sign for c=a+b and c=a-b.
+Those are reconciled at v8.
+Now look at fixpoint algos.
+NEXT LECTURE : WIDENING!
+=======================================================
+
