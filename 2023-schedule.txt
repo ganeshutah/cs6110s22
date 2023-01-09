@@ -1,0 +1,137 @@
+* Computing system design
+  - Analog, CPS, Digital*
+  - HW, SW*
+  - Sequential*, concurrent*
+  - System* (SW MC), Model* (Model-checking)
+  - HPC, ML, Control-oriented (OS)
+
+* How modeling languages 
+  - Shape thinking
+  - Help minimize the effort in capturing the behavior of systems in specific domains 
+  - Encourage the development of special-purpose verification methods
+
+* The area of Formal Methods
+  - Helps formalize common-sense notions of testing and debugging
+  - Helped invent methods that helped handle large (potentially infinite) state-spaces
+  - Automate bug-finding through efficient search/solving methods
+
+
+* How CS Theory helps reason about software
+  - Types of SW and reasoning methods
+  
+
+* Thinking logic
+  - Gates, XOR, Nand, universality, implication
+  - CNF, DNF, NNF, Shannon expansion
+  - BDDs
+  - Map-coloring
+  - Tic-Tac-Toe
+  - Sudoku
+  - Frequency assignment (Chou special issue)
+  - Kroening book
+  - Nathan Chong's PhD dissertation
+  - PUG paper
+
+
+* Basic notions
+  - Validity, Satisfiability, consistency, completeness, decidability
+  
+* How logic is mechanized
+  - BDD, DPLL, SMT
+
+* Expressive logics
+  - Alloy, relational
+  - FOL
+
+* ...
+
+* Invariance, fixpoints
+  - Rule systems
+
+* Automata
+  - finite and infinite words
+  - LTL
+  - checking
+
+-------------------------------------------------
+Plans for lectures
+
+* Intro to the wealth of topics one could potentially cover
+* Course plan (to help cover a slice through these topics)
+  - exposure to tools / techniques
+  - build confidence to try other tools
+  - pursue projects to satisfy one's learning aspirations
+* Keep pace, make things happen
+  - regular polls, quizzes, assignments
+  - Grading:
+    > Polls - 10,
+    > Quizzes - 10,
+    > Assignments - 30,
+    > Project - 50
+    
+-------------------------------------------------
+
+---------------------- Jan ----------------------
+
+10 - Intro, 
+   = Q1 due 1/17, P1 due 1/12 before class
+     
+12 - 
+   = P2 due p
+
+17
+19
+
+24
+26
+
+31
+
+(7)
+
+---------------------- Feb ----------------------
+2
+
+7
+9
+
+14
+16
+
+21
+23
+
+28
+
+---------------------- Mar ----------------------
+2
+
+14
+16
+
+21
+23
+
+28
+30
+
+---------------------- Apr ----------------------
+4
+6
+
+11
+13
+
+18
+20
+
+25 Last lecture
+
+27 Extra
+
+---------------------- May ----------------------
+2 Extra
+
+-------------------------------------------------
+
+
