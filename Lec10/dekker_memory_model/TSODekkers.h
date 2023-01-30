@@ -24,7 +24,7 @@ public:
         int otherTid = (tid == 0) ? 1 : 0;
         // wants_to_enter[0] ← true
         wants_to_enter[tid].store(true, std::memory_order_relaxed);
-        FENCE
+
         // while wants_to_enter[1] {
         while (wants_to_enter[otherTid].load(std::memory_order_relaxed))
         {
@@ -41,7 +41,7 @@ public:
                 // wants_to_enter[0] ← true
                 wants_to_enter[tid].store(true, std::memory_order_relaxed);
             }
-            FENCE
+
         }
     }
 
