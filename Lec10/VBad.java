@@ -2,9 +2,9 @@ public class VBad extends Thread{
     int tid;
     VBad(int i) { tid = i; }
     static int N = 100;
-    static  volatile
+    static  
 	boolean req = false;
-    static  volatile
+    static  
 	boolean ack = false;    
   public void run() {
 	int temp;

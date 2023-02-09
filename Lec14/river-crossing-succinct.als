@@ -1,47 +1,34 @@
 // From: Peter Kriens <pkriens@gmail.com>, July 16, 2020
-
 open util/ordering[Crossing]
-
 enum Object { Farmer, Chicken, Grain, Fox }
 
 let eats = Chicken->Grain + Fox->Chicken
-
 let safe[place] = Farmer in place or (no place.eats & place)
 
 sig Crossing {
-
 near, far : set Object,
-
 carry :  Object
-
 } {
-
 near = Object - far
-
 safe[near] 
-
 safe[far]
-
 }
 
 run {
-
 first.near = Object
-
 no first.far
 
-all c : Crossing - last, c':c.next {
-
-Farmer in c.near implies { 
-
-c'.far = c.far + c.carry + Farmer
-
-} else {
-
-c'.near = c.near + c.carry + Farmer
-
-}
-
+all c : Crossing - last, c1:c.next
+  {
+  Farmer in c.near
+  implies
+  { 
+    c1.far = c.far + c.carry + Farmer
+  }
+  else
+  {
+  c1.near = c.near + c.carry + Farmer
+  }
 }
 
 some c : Crossing | c.far = Object
