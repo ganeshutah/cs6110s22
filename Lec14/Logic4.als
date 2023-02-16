@@ -7,8 +7,12 @@
 -- exists y : forall x : p2(x,y) => forall x : exists y: p2(x,y)
 
 some sig U {
-  f1 : U,       -- one-ary fn
-  f2 : U -> U,  -- two-ary fn
+  f1 : U,          -- one-ary fn from U to U
+  f2 : U -> U,  -- one-ary fn from U to U->U (bij)
+                    -- many-to-one from U to bijections U->U
+                    -- too restricitive?
+		    -- groan, it can produce relations f2 !!
+		    -- for some args f[x,y] can produce two outputs!
 }
 
 sig S in U {} 
