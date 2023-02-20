@@ -1,0 +1,25 @@
+https://adalogics.com/blog/symbolic-execution-with-klee
+https://klee.github.io/docker/
+
+docker pull klee/klee:2.3
+docker run --rm -ti --ulimit='stack=-1:-1' klee/klee:2.3
+docker cp ~/Desktop/hardToHit.c dc563dc0bfd1:/home/klee
+docker cp ~/Desktop/binsrch.c dc563dc0bfd1:/home/klee
+# for reverse, docker cp dc563dc0bfd1:/home/klee/file.c ~/Desktop/new.c
+
+Once inside docker
+
+alias clang=/usr/lib/llvm-11/bin/clang
+gcc -DINITON -DPRINTON -I ../../include hardToHit.c
+./a.out
+clang -DKLEEON -I ../../include -emit-llvm -g -c -O0 -Xclang -disable-O0-optnone hardToHit.c
+klee hardToHit.bc
+ktest-tool klee-last/test000001.ktest
+ktest-tool klee-last/test000002.ktest
+ls klee-last
+ls -lgd klee-last
+ls klee-out-0/
+ktest-tool klee-last/test000002.ktest
+gcc -DKLEEON -DPRINTON -I ../../include -L /home/klee/klee_build/lib hardToHit.c -lkleeRuntest
+KTEST_FILE=klee-last/test000001.ktest ./a.out
+KTEST_FILE=klee-last/test000002.ktest ./a.out
