@@ -7,11 +7,17 @@
 #define PID byte
 
 bit mutex[Nprocs];
-PID po[Nprocs];
+
+PID po[Nprocs]; 
+
 chan request[Nprocs] = [Nprocs_1] of {PID};
+
 chan q_len_ch[Nprocs] = [1] of {byte};
+
 chan waiters[Nprocs] = [Nprocs_1] of {PID};
+
 byte qlen[Nprocs];   /* How many are waiting? */
+
 bit locked[Nprocs];
 
 byte pid_acq[Nprocs]; /* PID of acquire process  */
@@ -45,12 +51,13 @@ proctype acquire(PID me)
 							  // into the waiters[me] queue. This queue is presumably
 							  // going up monotonically in response to the sends that
 							  // someone else is doing...
+
                         locked[me] = 1; // now I've received all the waiters for the resouce, and I'm now taking the resource
                         mutex[me]=0
         fi;
 /*  */
                         /* Acquire continued */
-    release:
+    release: 
         
         atomic {
             mutex[me] == 0 -> // take this mutex so that we don't race on locked[me] with my own handle proc
@@ -88,6 +95,8 @@ proctype acquire(PID me)
 					
                 waiters[po[me]] ! thread; // "That process" (new owner of the locked privilege) will now
 				  	  // get this "thread"
+
+
 					  
                 thread = 0;		  // hey, I'm paranoid about dead-variable clean-up!
                 qlen[me] = qlen[me]-1
