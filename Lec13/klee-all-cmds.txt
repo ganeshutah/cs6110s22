@@ -3,8 +3,8 @@ https://klee.github.io/docker/
 
 docker pull klee/klee:2.3
 docker run --rm -ti --ulimit='stack=-1:-1' klee/klee:2.3
-docker cp ~/Desktop/hardToHit.c dc563dc0bfd1:/home/klee
-docker cp ~/Desktop/binsrch.c dc563dc0bfd1:/home/klee
+docker cp ~/Desktop/hardToHit.c dc563dc0bfd1:/home/klee # how to copy your files into docker
+docker cp ~/Desktop/binsrch.c dc563dc0bfd1:/home/klee   # how to copy-out files from docker
 # for reverse, docker cp dc563dc0bfd1:/home/klee/file.c ~/Desktop/new.c
 
 Once inside docker
