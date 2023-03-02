@@ -1,0 +1,49 @@
+Outline Tripti's lecture 
+. Intro
+  - Eva analysis
+. WP plugin
+  - steps to follow
+  - behavior statement
+. Written full example
+. Write more examples
+  - example-2
+  - ensures
+  - overflow change of abs function
+. Two diff ways of writing
+. Predicates that are allowed
+  - pre, post, loop-entry
+  - makes spec easier
+. Pointers
+  - why write as "valid"
+. Behaviors
+  - function or program has diff inputs
+  - example-3
+. Ensures
+  - how behaviors defined
+  - name the behaviors
+    > when input +ve and input -ve
+. Inference rules
+  - P1...Pn / C
+. Hoare triples
+  - assert stmts
+  - example4
+. Requires and ensures
+. Premis true
+  - assert after each point
+. WP example
+  - wp of the example
+  - example5
+. One example of loop invariants
+  - quisort etc later after break
+. What is the LI
+  - example6
+  - assert stmt
+. Loop variant
+  - termination
+  - example to show
+  - example7
+. One eva example
+  - eva plug-in
+  - domain of var
+
+-- end
